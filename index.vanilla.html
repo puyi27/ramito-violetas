@@ -1,0 +1,1031 @@
+<!DOCTYPE html>
+<html lang="es" class="h-full">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Un Ramito de Violetas • Una sorpresa para ti</title>
+  
+  <!-- Tailwind CSS CDN -->
+  <script src="https://cdn.tailwindcss.com"></script>
+  
+  <!-- Google Fonts: Cormorant Garamond, Great Vibes & Plus Jakarta Sans -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,600;1,400;1,600&family=Great+Vibes&family=Plus+Jakarta+Sans:wght@300;400;500;600&display=swap" rel="stylesheet">
+
+  <script>
+    tailwind.config = {
+      theme: {
+        extend: {
+          fontFamily: {
+            serif: ['"Cormorant Garamond"', 'Georgia', 'serif'],
+            script: ['"Great Vibes"', 'cursive'],
+            sans: ['"Plus Jakarta Sans"', 'sans-serif'],
+          },
+          colors: {
+            violetBrand: {
+              50: '#faf5ff',
+              100: '#f3e8ff',
+              200: '#e9d5ff',
+              300: '#d8b4fe',
+              400: '#c084fc',
+              500: '#a855f7',
+              600: '#9333ea',
+              700: '#7e22ce',
+              800: '#6b21a8',
+              900: '#581c87',
+              950: '#3b0764',
+            }
+          }
+        }
+      }
+    }
+  </script>
+
+  <style>
+    /* Estilos base y transiciones suaves */
+    html, body {
+      height: 100%;
+      overflow-x: hidden;
+      margin: 0;
+      padding: 0;
+      -webkit-font-smoothing: antialiased;
+      -moz-osx-font-smoothing: grayscale;
+    }
+
+    /* Fondo dinámico y suave */
+    .bg-soft-canvas {
+      background: radial-gradient(circle at 50% 30%, #ffffff 0%, #faf5ff 40%, #f3e8ff 80%, #ebdcfc 100%);
+      background-attachment: fixed;
+    }
+
+    /* Resplandor ambiental para el clímax */
+    .ambient-glow {
+      position: absolute;
+      width: 500px;
+      height: 500px;
+      border-radius: 50%;
+      background: radial-gradient(circle, rgba(192, 132, 252, 0.28) 0%, rgba(216, 180, 254, 0.12) 45%, transparent 70%);
+      filter: blur(45px);
+      pointer-events: none;
+      transform: translate(-50%, -50%);
+      transition: all 1.8s cubic-bezier(0.16, 1, 0.3, 1);
+    }
+
+    /* Animación del cursor en máquina de escribir */
+    .typing-cursor::after {
+      content: '|';
+      color: #9333ea;
+      font-weight: 300;
+      animation: blink 0.9s infinite;
+      margin-left: 2px;
+    }
+
+    @keyframes blink {
+      0%, 100% { opacity: 1; }
+      50% { opacity: 0; }
+    }
+
+    /* Pulsación sutil y elegante del botón inicial */
+    @keyframes gentlePulse {
+      0%, 100% {
+        transform: scale(1);
+        box-shadow: 0 10px 25px -5px rgba(147, 51, 234, 0.2), 0 8px 10px -6px rgba(147, 51, 234, 0.15);
+      }
+      50% {
+        transform: scale(1.025);
+        box-shadow: 0 20px 35px -5px rgba(147, 51, 234, 0.32), 0 10px 15px -5px rgba(147, 51, 234, 0.2);
+      }
+    }
+
+    .pulse-glow {
+      animation: gentlePulse 3.5s ease-in-out infinite;
+    }
+    .pulse-glow:hover {
+      animation: none;
+    }
+
+    /* Animaciones para las flores del ramo (efecto floración orgánica) */
+    .flower-stem {
+      stroke-dasharray: 400;
+      stroke-dashoffset: 400;
+      animation: drawStem 1.4s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+    }
+
+    .flower-leaf {
+      transform-origin: center bottom;
+      transform: scale(0) rotate(var(--rot, 0deg));
+      animation: popLeaf 1.1s cubic-bezier(0.34, 1.4, 0.64, 1) forwards;
+    }
+
+    .flower-bloom {
+      transform-origin: var(--ox, center) var(--oy, center);
+      transform: scale(0) rotate(var(--rot, 0deg));
+      animation: bloomFlower 1.2s cubic-bezier(0.34, 1.45, 0.64, 1) forwards;
+    }
+
+    .ribbon-knot {
+      transform-origin: center;
+      transform: scale(0);
+      animation: popRibbon 0.9s cubic-bezier(0.34, 1.4, 0.64, 1) forwards;
+    }
+
+    @keyframes drawStem {
+      to {
+        stroke-dashoffset: 0;
+      }
+    }
+
+    @keyframes popLeaf {
+      to {
+        transform: scale(1) rotate(var(--rot, 0deg));
+      }
+    }
+
+    @keyframes bloomFlower {
+      to {
+        transform: scale(1) rotate(var(--rot, 0deg));
+      }
+    }
+
+    @keyframes popRibbon {
+      to {
+        transform: scale(1);
+      }
+    }
+
+    /* Brillo flotante decorativo */
+    @keyframes floatGentle {
+      0%, 100% { transform: translateY(0px) rotate(0deg); }
+      50% { transform: translateY(-7px) rotate(1.5deg); }
+    }
+
+    .floating-bouquet {
+      animation: floatGentle 5.5s ease-in-out infinite;
+    }
+  </style>
+</head>
+<body class="bg-soft-canvas text-gray-800 flex flex-col justify-center items-center min-h-screen relative p-4 selection:bg-purple-200">
+
+  <!-- Canvas de partículas y pétalos cayendo -->
+  <canvas id="petals-canvas" class="fixed inset-0 w-full h-full pointer-events-none z-10 opacity-0 transition-opacity duration-1000"></canvas>
+
+  <!-- Resplandor ambiental de fondo -->
+  <div id="ambient-glow" class="ambient-glow top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 opacity-30"></div>
+
+  <!-- Contenedor Principal Adaptable -->
+  <main class="w-full max-w-2xl mx-auto flex flex-col items-center justify-center min-h-[550px] relative z-20 py-8 px-4 text-center">
+
+    <!-- ============================================== -->
+    <!-- ETAPA 1: PANTALLA INICIAL                     -->
+    <!-- ============================================== -->
+    <section id="stage-intro" class="w-full flex flex-col items-center justify-center transition-all duration-700 ease-out transform opacity-100 scale-100">
+      
+      <!-- Detalle estético decorativo superior -->
+      <div class="mb-5 inline-flex items-center gap-2 px-4 py-1.5 rounded-full bg-white/70 backdrop-blur-md border border-purple-200/60 shadow-sm text-xs md:text-sm text-purple-700 font-medium tracking-wide">
+        <span class="w-2 h-2 rounded-full bg-purple-500 animate-ping"></span>
+        <span>Mensaje especial preparado para ti</span>
+      </div>
+
+      <h1 class="font-serif text-3xl sm:text-4xl md:text-5xl text-purple-950 font-normal tracking-tight mb-3 leading-tight max-w-lg">
+        Hay momentos que merecen ser recordados
+      </h1>
+
+      <p class="font-sans text-gray-500 text-sm sm:text-base max-w-md mb-8 leading-relaxed font-light">
+        Tómate un segundo, respira profundo y abre este pequeño rincón preparado con cariño.
+      </p>
+
+      <!-- Botón Principal con Microinteracción -->
+      <button 
+        id="btn-start"
+        type="button"
+        class="pulse-glow group relative inline-flex items-center justify-center gap-3 px-8 py-4 sm:px-10 sm:py-4 rounded-full bg-gradient-to-r from-purple-600 via-violet-600 to-indigo-600 hover:from-purple-500 hover:via-violet-500 hover:to-indigo-500 text-white font-medium text-base sm:text-lg shadow-xl shadow-purple-400/30 hover:shadow-2xl hover:shadow-purple-500/40 hover:-translate-y-1 active:translate-y-0 active:scale-95 transition-all duration-300 cursor-pointer overflow-hidden border border-white/20"
+      >
+        <span class="relative z-10 tracking-wide font-sans flex items-center gap-2">
+          <span>Tengo una sorpresa para ti</span>
+          <svg class="w-5 h-5 transition-transform duration-300 group-hover:rotate-12 group-hover:scale-110" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 3v1m0 16v1m9-9h-1M4 12H3m15.364 6.364l-.707-.707M6.343 6.343l-.707-.707m12.728 0l-.707.707M6.343 17.657l-.707.707M16 12a4 4 0 11-8 0 4 4 0 018 0z" />
+          </svg>
+        </span>
+        <!-- Efecto de brillo que cruza en hover -->
+        <div class="absolute inset-0 -translate-x-full group-hover:translate-x-full transition-transform duration-1000 bg-gradient-to-r from-transparent via-white/25 to-transparent"></div>
+      </button>
+
+      <span class="mt-4 text-xs text-purple-400/80 font-light">Toca para descubrirlo</span>
+    </section>
+
+    <!-- ============================================== -->
+    <!-- ETAPA 2: SECUENCIA DE FRASES                  -->
+    <!-- ============================================== -->
+    <section id="stage-phrases" class="hidden w-full flex-col items-center justify-center transition-all duration-700 ease-out transform opacity-0 scale-95 min-h-[220px]">
+      
+      <!-- Indicador sutil de progreso -->
+      <div id="phrases-dots" class="flex items-center gap-2 mb-8">
+        <!-- Generados dinámicamente con JS -->
+      </div>
+
+      <!-- Contenedor del texto animado -->
+      <div class="relative w-full max-w-xl px-6 min-h-[120px] flex items-center justify-center">
+        <p id="phrase-text" class="font-serif italic text-2xl sm:text-3xl md:text-4xl text-purple-900 leading-relaxed font-normal tracking-wide transition-all duration-500 ease-in-out opacity-100 transform translate-y-0">
+          <!-- El texto de las frases se inyecta aquí -->
+        </p>
+      </div>
+
+      <!-- Pequeño adorno sutil inferior -->
+      <div class="mt-6 flex items-center justify-center gap-2 opacity-50">
+        <span class="w-8 h-px bg-gradient-to-r from-transparent to-purple-400"></span>
+        <span class="text-purple-500 text-xs">❦</span>
+        <span class="w-8 h-px bg-gradient-to-l from-transparent to-purple-400"></span>
+      </div>
+    </section>
+
+    <!-- ============================================== -->
+    <!-- ETAPA 3 & 4: REVELACIÓN FINAL (EL RAMO Y CIERRE)-->
+    <!-- ============================================== -->
+    <section id="stage-bouquet" class="hidden w-full flex-col items-center justify-center transition-all duration-1000 ease-out transform opacity-0 translate-y-6">
+      
+      <!-- Contenedor del Ramo SVG Vectorial -->
+      <div class="relative w-72 sm:w-80 md:w-96 mx-auto mb-6 flex items-center justify-center floating-bouquet">
+        
+        <!-- Halo dorado y lila de fondo tras el ramo -->
+        <div class="absolute inset-0 -m-8 bg-gradient-to-t from-purple-300/20 via-pink-200/30 to-amber-100/30 rounded-full blur-2xl -z-10"></div>
+
+        <!-- SVG Ilustrado del Ramo de Violetas -->
+        <svg id="bouquet-svg" viewBox="0 0 400 480" class="w-full h-auto drop-shadow-xl" xmlns="http://www.w3.org/2000/svg">
+          <defs>
+            <!-- Gradientes de tallos -->
+            <linearGradient id="stemGrad" x1="0%" y1="0%" x2="100%" y2="100%">
+              <stop offset="0%" stop-color="#34d399"/>
+              <stop offset="50%" stop-color="#059669"/>
+              <stop offset="100%" stop-color="#064e3b"/>
+            </linearGradient>
+
+            <!-- Gradientes de hojas aterciopeladas -->
+            <linearGradient id="leafGrad1" x1="0%" y1="0%" x2="100%" y2="100%">
+              <stop offset="0%" stop-color="#10b981"/>
+              <stop offset="100%" stop-color="#047857"/>
+            </linearGradient>
+            <linearGradient id="leafGrad2" x1="0%" y1="0%" x2="100%" y2="100%">
+              <stop offset="0%" stop-color="#34d399"/>
+              <stop offset="100%" stop-color="#065f46"/>
+            </linearGradient>
+
+            <!-- Gradientes para los pétalos de violeta -->
+            <!-- Tono Violeta Profundo Intenso -->
+            <linearGradient id="petalDeep" x1="0%" y1="0%" x2="0%" y2="100%">
+              <stop offset="0%" stop-color="#9333ea"/>
+              <stop offset="60%" stop-color="#6b21a8"/>
+              <stop offset="100%" stop-color="#4c1d95"/>
+            </linearGradient>
+
+            <!-- Tono Violeta Suave Luminoso -->
+            <linearGradient id="petalLight" x1="0%" y1="0%" x2="0%" y2="100%">
+              <stop offset="0%" stop-color="#c084fc"/>
+              <stop offset="70%" stop-color="#a855f7"/>
+              <stop offset="100%" stop-color="#7e22ce"/>
+            </linearGradient>
+
+            <!-- Tono Magenta / Orquídea -->
+            <linearGradient id="petalVivid" x1="0%" y1="0%" x2="0%" y2="100%">
+              <stop offset="0%" stop-color="#d946ef"/>
+              <stop offset="60%" stop-color="#a21caf"/>
+              <stop offset="100%" stop-color="#701a75"/>
+            </linearGradient>
+
+            <!-- Gradiente de lazo/cinta satinada -->
+            <linearGradient id="ribbonGrad" x1="0%" y1="0%" x2="100%" y2="100%">
+              <stop offset="0%" stop-color="#fbcfe8"/>
+              <stop offset="50%" stop-color="#f472b6"/>
+              <stop offset="100%" stop-color="#db2777"/>
+            </linearGradient>
+
+            <!-- Centro de la flor: pistilo amarillo brillante -->
+            <radialGradient id="centerGlow" cx="50%" cy="50%" r="50%">
+              <stop offset="0%" stop-color="#ffffff"/>
+              <stop offset="40%" stop-color="#fde047"/>
+              <stop offset="80%" stop-color="#eab308"/>
+              <stop offset="100%" stop-color="#ca8a04"/>
+            </radialGradient>
+
+            <!-- Filtro de sombra suave para profundidad -->
+            <filter id="softShadow" x="-20%" y="-20%" width="140%" height="140%">
+              <feDropShadow dx="1" dy="3" stdDeviation="3" flood-color="#4a044e" flood-opacity="0.18"/>
+            </filter>
+          </defs>
+
+          <!-- ================= CAPA 1: TALLOS ================= -->
+          <g id="stems-group" stroke="url(#stemGrad)" stroke-width="5" stroke-linecap="round" fill="none">
+            <!-- Varios tallos entrecruzados en la base -->
+            <path class="flower-stem" style="animation-delay: 0.1s;" d="M200 240 Q195 330 185 410" />
+            <path class="flower-stem" style="animation-delay: 0.15s;" d="M180 235 Q190 325 175 415" />
+            <path class="flower-stem" style="animation-delay: 0.2s;" d="M220 235 Q205 325 220 415" />
+            <path class="flower-stem" style="animation-delay: 0.25s;" d="M160 250 Q185 330 190 418" />
+            <path class="flower-stem" style="animation-delay: 0.3s;" d="M240 250 Q215 330 205 418" />
+            <path class="flower-stem" style="animation-delay: 0.35s;" d="M140 230 Q175 320 180 410" />
+            <path class="flower-stem" style="animation-delay: 0.4s;" d="M260 230 Q225 320 215 410" />
+          </g>
+
+          <!-- ================= CAPA 2: HOJAS ACORAZONADAS DE VIOLETA ================= -->
+          <g id="leaves-group" filter="url(#softShadow)">
+            <!-- Hoja izquierda inferior -->
+            <g class="flower-leaf" style="--rot: -22deg; animation-delay: 0.35s;">
+              <path d="M145 270 C100 245 80 180 135 170 C175 160 170 240 145 270 Z" fill="url(#leafGrad1)"/>
+              <path d="M145 270 Q138 210 135 170" stroke="#064e3b" stroke-width="2" fill="none" opacity="0.4"/>
+            </g>
+
+            <!-- Hoja derecha inferior -->
+            <g class="flower-leaf" style="--rot: 20deg; animation-delay: 0.4s;">
+              <path d="M255 270 C300 245 320 180 265 170 C225 160 230 240 255 270 Z" fill="url(#leafGrad2)"/>
+              <path d="M255 270 Q262 210 265 170" stroke="#064e3b" stroke-width="2" fill="none" opacity="0.4"/>
+            </g>
+
+            <!-- Hoja trasera central superior -->
+            <g class="flower-leaf" style="--rot: 4deg; animation-delay: 0.45s;">
+              <path d="M200 170 C160 130 170 70 200 65 C230 70 240 130 200 170 Z" fill="url(#leafGrad1)"/>
+              <path d="M200 170 Q200 110 200 65" stroke="#064e3b" stroke-width="2" fill="none" opacity="0.35"/>
+            </g>
+
+            <!-- Hoja lateral izquierda alta -->
+            <g class="flower-leaf" style="--rot: -40deg; animation-delay: 0.5s;">
+              <path d="M120 190 C75 160 85 105 130 110 C165 115 150 170 120 190 Z" fill="url(#leafGrad2)"/>
+            </g>
+
+            <!-- Hoja lateral derecha alta -->
+            <g class="flower-leaf" style="--rot: 38deg; animation-delay: 0.55s;">
+              <path d="M280 190 C325 160 315 105 270 110 C235 115 250 170 280 190 Z" fill="url(#leafGrad1)"/>
+            </g>
+          </g>
+
+          <!-- ================= CAPA 3: FLORES DE VIOLETA INDIVIDUALES ================= -->
+          <!-- Cada violeta tiene su anatomía: 5 pétalos (2 superiores, 2 laterales, 1 inferior acorazonado) + centro amarillo radiante con líneas finas -->
+          <g id="blooms-group" filter="url(#softShadow)">
+
+            <!-- FLORES DE FONDO / PERÍMETRO -->
+            <!-- Flor 1: Superior Izquierda -->
+            <g class="flower-bloom" style="--ox: 145px; --oy: 145px; --rot: -12deg; animation-delay: 0.6s;">
+              <!-- Pétalos superiores -->
+              <ellipse cx="135" cy="130" rx="16" ry="20" fill="url(#petalDeep)" transform="rotate(-20 135 130)" />
+              <ellipse cx="155" cy="130" rx="16" ry="20" fill="url(#petalDeep)" transform="rotate(20 155 130)" />
+              <!-- Pétalos laterales -->
+              <ellipse cx="125" cy="148" rx="17" ry="15" fill="url(#petalLight)" transform="rotate(-15 125 148)" />
+              <ellipse cx="165" cy="148" rx="17" ry="15" fill="url(#petalLight)" transform="rotate(15 165 148)" />
+              <!-- Pétalo inferior ancho -->
+              <path d="M132 152 C125 172 165 172 158 152 Z" fill="url(#petalLight)" />
+              <!-- Centro -->
+              <circle cx="145" cy="145" r="4.5" fill="url(#centerGlow)"/>
+            </g>
+
+            <!-- Flor 2: Superior Derecha -->
+            <g class="flower-bloom" style="--ox: 255px; --oy: 140px; --rot: 15deg; animation-delay: 0.68s;">
+              <ellipse cx="245" cy="125" rx="16" ry="20" fill="url(#petalVivid)" transform="rotate(-18 245 125)" />
+              <ellipse cx="265" cy="125" rx="16" ry="20" fill="url(#petalVivid)" transform="rotate(18 265 125)" />
+              <ellipse cx="235" cy="142" rx="17" ry="15" fill="url(#petalDeep)" transform="rotate(-10 235 142)" />
+              <ellipse cx="275" cy="142" rx="17" ry="15" fill="url(#petalDeep)" transform="rotate(10 275 142)" />
+              <path d="M242 146 C235 166 275 166 268 146 Z" fill="url(#petalLight)" />
+              <circle cx="255" cy="140" r="4.5" fill="url(#centerGlow)"/>
+            </g>
+
+            <!-- Flor 3: Coronilla Central Alta -->
+            <g class="flower-bloom" style="--ox: 200px; --oy: 115px; --rot: 0deg; animation-delay: 0.75s;">
+              <ellipse cx="190" cy="100" rx="15" ry="19" fill="url(#petalLight)" transform="rotate(-18 190 100)" />
+              <ellipse cx="210" cy="100" rx="15" ry="19" fill="url(#petalLight)" transform="rotate(18 210 100)" />
+              <ellipse cx="180" cy="118" rx="16" ry="14" fill="url(#petalDeep)" transform="rotate(-12 180 118)" />
+              <ellipse cx="220" cy="118" rx="16" ry="14" fill="url(#petalDeep)" transform="rotate(12 220 118)" />
+              <path d="M188 122 C180 140 220 140 212 122 Z" fill="url(#petalDeep)" />
+              <circle cx="200" cy="115" r="4" fill="url(#centerGlow)"/>
+            </g>
+
+            <!-- Flor 4: Lateral Izquierda Extrema -->
+            <g class="flower-bloom" style="--ox: 110px; --oy: 195px; --rot: -28deg; animation-delay: 0.82s;">
+              <ellipse cx="102" cy="182" rx="15" ry="18" fill="url(#petalDeep)" />
+              <ellipse cx="120" cy="180" rx="15" ry="18" fill="url(#petalDeep)" />
+              <ellipse cx="94" cy="198" rx="15" ry="14" fill="url(#petalLight)" />
+              <ellipse cx="126" cy="196" rx="15" ry="14" fill="url(#petalLight)" />
+              <path d="M100 202 C95 220 128 220 120 202 Z" fill="url(#petalLight)" />
+              <circle cx="110" cy="195" r="4" fill="url(#centerGlow)"/>
+            </g>
+
+            <!-- Flor 5: Lateral Derecha Extrema -->
+            <g class="flower-bloom" style="--ox: 290px; --oy: 195px; --rot: 25deg; animation-delay: 0.9s;">
+              <ellipse cx="280" cy="180" rx="15" ry="18" fill="url(#petalVivid)" />
+              <ellipse cx="300" cy="182" rx="15" ry="18" fill="url(#petalVivid)" />
+              <ellipse cx="274" cy="196" rx="15" ry="14" fill="url(#petalDeep)" />
+              <ellipse cx="306" cy="198" rx="15" ry="14" fill="url(#petalDeep)" />
+              <path d="M280 202 C272 220 305 220 300 202 Z" fill="url(#petalDeep)" />
+              <circle cx="290" cy="195" r="4" fill="url(#centerGlow)"/>
+            </g>
+
+            <!-- FLORES DEL CENTRO / PRIMER PLANO (Más grandes, vibrantes y detalladas) -->
+
+            <!-- Flor 6: Centro Medio-Izquierda -->
+            <g class="flower-bloom" style="--ox: 165px; --oy: 185px; --rot: -8deg; animation-delay: 0.98s;">
+              <ellipse cx="152" cy="168" rx="18" ry="22" fill="url(#petalDeep)" transform="rotate(-15 152 168)" />
+              <ellipse cx="178" cy="168" rx="18" ry="22" fill="url(#petalDeep)" transform="rotate(15 178 168)" />
+              <ellipse cx="142" cy="188" rx="19" ry="16" fill="url(#petalLight)" transform="rotate(-10 142 188)" />
+              <ellipse cx="188" cy="188" rx="19" ry="16" fill="url(#petalLight)" transform="rotate(10 188 188)" />
+              <!-- Pétalo inferior acorazonado con nervaduras violeta oscuro -->
+              <path d="M150 192 C140 216 190 216 180 192 Z" fill="url(#petalVivid)" />
+              <!-- Pestañas/rayitas moradas del centro hacia afuera -->
+              <path d="M165 185 L160 195 M165 185 L165 197 M165 185 L170 195" stroke="#4c1d95" stroke-width="1.2" opacity="0.6"/>
+              <circle cx="165" cy="185" r="5" fill="url(#centerGlow)"/>
+            </g>
+
+            <!-- Flor 7: Centro Medio-Derecha -->
+            <g class="flower-bloom" style="--ox: 235px; --oy: 185px; --rot: 10deg; animation-delay: 1.05s;">
+              <ellipse cx="222" cy="168" rx="18" ry="22" fill="url(#petalLight)" transform="rotate(-15 222 168)" />
+              <ellipse cx="248" cy="168" rx="18" ry="22" fill="url(#petalLight)" transform="rotate(15 248 168)" />
+              <ellipse cx="212" cy="188" rx="19" ry="16" fill="url(#petalDeep)" transform="rotate(-10 212 188)" />
+              <ellipse cx="258" cy="188" rx="19" ry="16" fill="url(#petalDeep)" transform="rotate(10 258 188)" />
+              <path d="M220 192 C210 216 260 216 250 192 Z" fill="url(#petalDeep)" />
+              <path d="M235 185 L230 195 M235 185 L235 197 M235 185 L240 195" stroke="#3b0764" stroke-width="1.2" opacity="0.6"/>
+              <circle cx="235" cy="185" r="5" fill="url(#centerGlow)"/>
+            </g>
+
+            <!-- Flor 8: CORAZÓN DEL RAMO (La flor protagonista más grande y frontal) -->
+            <g class="flower-bloom" style="--ox: 200px; --oy: 215px; --rot: 0deg; animation-delay: 1.15s;">
+              <!-- Pétalos superiores -->
+              <ellipse cx="185" cy="196" rx="20" ry="25" fill="url(#petalDeep)" transform="rotate(-16 185 196)" />
+              <ellipse cx="215" cy="196" rx="20" ry="25" fill="url(#petalDeep)" transform="rotate(16 215 196)" />
+              <!-- Pétalos laterales sedosos -->
+              <ellipse cx="174" cy="218" rx="21" ry="18" fill="url(#petalLight)" transform="rotate(-8 174 218)" />
+              <ellipse cx="226" cy="218" rx="21" ry="18" fill="url(#petalLight)" transform="rotate(8 226 218)" />
+              <!-- Pétalo inferior amplio con borde aterciopelado -->
+              <path d="M182 222 C170 250 230 250 218 222 Z" fill="url(#petalLight)" />
+              <!-- Rayitas características de la violeta silvestre -->
+              <path d="M200 215 L194 227 M200 215 L200 230 M200 215 L206 227" stroke="#4c1d95" stroke-width="1.5" stroke-linecap="round"/>
+              <!-- Ojo amarillo brillante -->
+              <circle cx="200" cy="215" r="5.5" fill="url(#centerGlow)"/>
+              <circle cx="200" cy="215" r="2" fill="#ffffff" opacity="0.8"/>
+            </g>
+
+            <!-- Flor 9: Delantera Izquierda Baja -->
+            <g class="flower-bloom" style="--ox: 155px; --oy: 235px; --rot: -18deg; animation-delay: 1.25s;">
+              <ellipse cx="144" cy="222" rx="16" ry="19" fill="url(#petalVivid)" transform="rotate(-15 144 222)" />
+              <ellipse cx="166" cy="222" rx="16" ry="19" fill="url(#petalVivid)" transform="rotate(15 166 222)" />
+              <ellipse cx="136" cy="238" rx="16" ry="14" fill="url(#petalDeep)" />
+              <ellipse cx="174" cy="238" rx="16" ry="14" fill="url(#petalDeep)" />
+              <path d="M145 242 C138 260 172 260 165 242 Z" fill="url(#petalDeep)" />
+              <circle cx="155" cy="235" r="4.5" fill="url(#centerGlow)"/>
+            </g>
+
+            <!-- Flor 10: Delantera Derecha Baja -->
+            <g class="flower-bloom" style="--ox: 245px; --oy: 235px; --rot: 20deg; animation-delay: 1.3s;">
+              <ellipse cx="234" cy="222" rx="16" ry="19" fill="url(#petalDeep)" transform="rotate(-15 234 222)" />
+              <ellipse cx="256" cy="222" rx="16" ry="19" fill="url(#petalDeep)" transform="rotate(15 256 222)" />
+              <ellipse cx="226" cy="238" rx="16" ry="14" fill="url(#petalLight)" />
+              <ellipse cx="264" cy="238" rx="16" ry="14" fill="url(#petalLight)" />
+              <path d="M235 242 C228 260 262 260 255 242 Z" fill="url(#petalLight)" />
+              <circle cx="245" cy="235" r="4.5" fill="url(#centerGlow)"/>
+            </g>
+
+            <!-- Pequeños capullos / botones de violeta emergiendo -->
+            <g class="flower-bloom" style="--ox: 110px; --oy: 140px; --rot: -45deg; animation-delay: 0.9s;">
+              <path d="M110 140 Q100 120 115 115 Q125 125 110 140 Z" fill="url(#petalDeep)"/>
+              <path d="M110 140 Q112 130 110 120" stroke="#059669" stroke-width="2"/>
+            </g>
+            <g class="flower-bloom" style="--ox: 285px; --oy: 135px; --rot: 40deg; animation-delay: 0.95s;">
+              <path d="M285 135 Q295 115 280 110 Q270 120 285 135 Z" fill="url(#petalLight)"/>
+              <path d="M285 135 Q283 125 285 115" stroke="#059669" stroke-width="2"/>
+            </g>
+          </g>
+
+          <!-- ================= CAPA 4: EL LAZO DE CINTA DE SEDA ================= -->
+          <g id="ribbon-group" class="ribbon-knot" style="animation-delay: 1.4s;" filter="url(#softShadow)">
+            <!-- Vueltas de cinta atando los tallos -->
+            <rect x="180" y="315" width="40" height="14" rx="6" fill="#be185d" opacity="0.3" transform="rotate(-3 200 322)"/>
+            <rect x="182" y="312" width="36" height="12" rx="5" fill="url(#ribbonGrad)" transform="rotate(-2 200 318)"/>
+
+            <!-- Lazada izquierda -->
+            <path d="M198 320 C165 300 140 325 165 338 C185 348 196 330 198 322 Z" fill="url(#ribbonGrad)"/>
+            <path d="M196 322 C175 312 160 325 174 334" stroke="#db2777" stroke-width="1.5" fill="none" opacity="0.5"/>
+
+            <!-- Lazada derecha -->
+            <path d="M202 320 C235 300 260 325 235 338 C215 348 204 330 202 322 Z" fill="url(#ribbonGrad)"/>
+            <path d="M204 322 C225 312 240 325 226 334" stroke="#db2777" stroke-width="1.5" fill="none" opacity="0.5"/>
+
+            <!-- Cintas colgantes ondeadas hacia abajo -->
+            <path d="M196 325 Q180 365 170 395 Q180 380 190 390 Q192 355 198 328 Z" fill="url(#ribbonGrad)"/>
+            <path d="M204 325 Q220 365 230 395 Q220 380 210 390 Q208 355 202 328 Z" fill="url(#ribbonGrad)"/>
+
+            <!-- Nudo central del lazo -->
+            <ellipse cx="200" cy="322" rx="9" ry="8" fill="#ec4899"/>
+            <ellipse cx="200" cy="321" rx="7" ry="6" fill="url(#ribbonGrad)"/>
+            <circle cx="198" cy="319" r="2" fill="#fdf2f8" opacity="0.7"/>
+          </g>
+        </svg>
+      </div>
+
+      <!-- ============================================== -->
+      <!-- DEDICATORIA FINAL CON TIPOGRAFÍA ELEGANTE      -->
+      <!-- ============================================== -->
+      <div id="dedication-card" class="w-full max-w-lg bg-white/75 backdrop-blur-md border border-purple-200/80 rounded-2xl p-6 sm:p-8 shadow-xl shadow-purple-500/10 text-center transition-all duration-1000 delay-500 transform opacity-0 translate-y-4">
+        
+        <h2 id="dedication-title" class="font-serif text-2xl sm:text-3xl text-purple-950 font-normal mb-3 tracking-wide">
+          Para ti, con todo mi cariño
+        </h2>
+
+        <p id="dedication-text" class="font-serif italic text-base sm:text-lg text-purple-900/90 leading-relaxed mb-4 font-normal">
+          Dicen que las violetas simbolizan la lealtad, la calma y los afectos más sinceros. Que este ramo florezca siempre en tu recuerdo como un símbolo de lo especial que eres.
+        </p>
+
+        <p id="dedication-signature" class="font-script text-2xl sm:text-3xl text-purple-700 tracking-wide mt-2">
+          Siempre en mi corazón ✨
+        </p>
+
+        <!-- Divisor decorativo -->
+        <div class="w-16 h-px bg-purple-200 mx-auto my-5"></div>
+
+        <!-- Botón Discreto para Reiniciar la Experiencia -->
+        <button 
+          id="btn-replay"
+          type="button"
+          class="inline-flex items-center gap-2 px-5 py-2.5 rounded-full bg-purple-100/80 hover:bg-purple-200 text-purple-800 text-xs sm:text-sm font-sans font-medium transition-all duration-200 hover:scale-105 active:scale-95 cursor-pointer shadow-sm border border-purple-200/50"
+        >
+          <svg class="w-4 h-4 text-purple-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 4v5h.582m15.356 2A8.001 8.001 0 004.582 9m0 0H9m11 11v-5h-.581m0 0a8.003 8.003 0 01-15.357-2m15.357 2H15" />
+          </svg>
+          <span>Repetir la sorpresa</span>
+        </button>
+      </div>
+
+    </section>
+
+  </main>
+
+  <!-- ============================================== -->
+  <!-- JAVASCRIPT: LÓGICA Y CONFIGURACIÓN             -->
+  <!-- ============================================== -->
+  <script>
+    /**
+     * ========================================================
+     * CONFIGURACIÓN PERSONALIZABLE
+     * Edita libremente los textos, dedicatoria y tiempos aquí.
+     * ========================================================
+     */
+    const CONFIG = {
+      // Secuencia de frases que se muestran antes del ramo
+      phrases: [
+        "A veces, los detalles más pequeños...",
+        "...guardan los sentimientos más profundos.",
+        "Pensé en ti y quise traerte algo eterno.",
+        "Un pedacito de primavera que nunca se marchita."
+      ],
+
+      // Textos de la dedicatoria final
+      dedication: {
+        title: "Para alguien muy especial",
+        text: "Dicen que las violetas simbolizan la delicadeza, la lealtad y los afectos más sinceros. Que este ramo te recuerde hoy y siempre la luz tan bonita que transmites.",
+        signature: "Con todo mi cariño ✨"
+      },
+
+      // Tiempos de animación (en milisegundos)
+      typingSpeed: 42,           // Velocidad de cada letra en la máquina de escribir
+      phraseStayDuration: 2200,  // Tiempo que la frase completa permanece en pantalla antes de desvanecerse
+      fadeTransitionTime: 450,   // Duración del desvanecimiento (fade-out)
+      audioEnabled: true         // Genera un acorde etéreo suave con Web Audio API al abrir
+    };
+
+    /**
+     * ========================================================
+     * VARIABLES DE ESTADO Y ELEMENTOS DEL DOM
+     * ========================================================
+     */
+    const stageIntro = document.getElementById('stage-intro');
+    const stagePhrases = document.getElementById('stage-phrases');
+    const stageBouquet = document.getElementById('stage-bouquet');
+    
+    const btnStart = document.getElementById('btn-start');
+    const btnReplay = document.getElementById('btn-replay');
+    
+    const phraseTextEl = document.getElementById('phrase-text');
+    const phrasesDotsEl = document.getElementById('phrases-dots');
+    
+    const dedicationCard = document.getElementById('dedication-card');
+    const dedicationTitle = document.getElementById('dedication-title');
+    const dedicationText = document.getElementById('dedication-text');
+    const dedicationSignature = document.getElementById('dedication-signature');
+    
+    const bouquetSvg = document.getElementById('bouquet-svg');
+    const petalsCanvas = document.getElementById('petals-canvas');
+    const ambientGlow = document.getElementById('ambient-glow');
+
+    let currentPhraseIndex = 0;
+    let typingTimeout = null;
+    let sequenceTimeout = null;
+    let isExperienceActive = false;
+    let isResetting = false;
+
+    // Inicializar dedicatoria desde CONFIG
+    dedicationTitle.textContent = CONFIG.dedication.title;
+    dedicationText.textContent = CONFIG.dedication.text;
+    dedicationSignature.textContent = CONFIG.dedication.signature;
+
+    /**
+     * ========================================================
+     * SÍNTESIS DE SONIDO SUAVE (Web Audio API)
+     * Toque sonoro sutil, etéreo y opcional sin dependencias externas
+     * ========================================================
+     */
+    let audioCtx = null;
+    function playChime(freq = 523.25, type = 'sine', duration = 1.6) {
+      if (!CONFIG.audioEnabled) return;
+      try {
+        if (!audioCtx) {
+          audioCtx = new (window.AudioContext || window.webkitAudioContext)();
+        }
+        if (audioCtx.state === 'suspended') {
+          audioCtx.resume();
+        }
+        const osc = audioCtx.createOscillator();
+        const gain = audioCtx.createGain();
+        osc.type = type;
+        osc.frequency.setValueAtTime(freq, audioCtx.currentTime);
+        
+        gain.gain.setValueAtTime(0.001, audioCtx.currentTime);
+        gain.gain.exponentialRampToValueAtTime(0.08, audioCtx.currentTime + 0.08);
+        gain.gain.exponentialRampToValueAtTime(0.0001, audioCtx.currentTime + duration);
+
+        osc.connect(gain);
+        gain.connect(audioCtx.destination);
+
+        osc.start();
+        osc.stop(audioCtx.currentTime + duration);
+      } catch (e) {
+        // Fallback silencioso si el navegador lo bloquea
+      }
+    }
+
+    function playBloomChimes() {
+      // Acorde armónico en Do Mayor 7 / La menor (etéreo y cálido)
+      const notes = [392.00, 493.88, 587.33, 659.25, 783.99]; // G4, B4, D5, E5, G5
+      notes.forEach((freq, idx) => {
+        setTimeout(() => playChime(freq, 'sine', 2.2), idx * 180);
+      });
+    }
+
+    /**
+     * ========================================================
+     * PUNTOS INDICADORES DE FRASES
+     * ========================================================
+     */
+    function setupPhraseIndicators() {
+      phrasesDotsEl.innerHTML = '';
+      CONFIG.phrases.forEach((_, idx) => {
+        const dot = document.createElement('div');
+        dot.className = `w-2 h-2 rounded-full transition-all duration-300 ${
+          idx === currentPhraseIndex ? 'bg-purple-600 w-6' : 'bg-purple-300'
+        }`;
+        phrasesDotsEl.appendChild(dot);
+      });
+    }
+
+    function updatePhraseIndicators() {
+      const dots = phrasesDotsEl.children;
+      for (let i = 0; i < dots.length; i++) {
+        if (i === currentPhraseIndex) {
+          dots[i].className = 'w-6 h-2 rounded-full bg-purple-600 transition-all duration-300';
+        } else if (i < currentPhraseIndex) {
+          dots[i].className = 'w-2 h-2 rounded-full bg-purple-400 transition-all duration-300';
+        } else {
+          dots[i].className = 'w-2 h-2 rounded-full bg-purple-200 transition-all duration-300';
+        }
+      }
+    }
+
+    /**
+     * ========================================================
+     * EFECTO TYPEWRITER + TRANSICIÓN DE FRASES
+     * ========================================================
+     */
+    function typeWriter(text, element, callback) {
+      element.innerHTML = '';
+      element.classList.add('typing-cursor');
+      let i = 0;
+
+      function step() {
+        if (!isExperienceActive) return;
+        if (i < text.length) {
+          element.textContent += text.charAt(i);
+          i++;
+          typingTimeout = setTimeout(step, CONFIG.typingSpeed);
+        } else {
+          // Ha terminado de escribir
+          element.classList.remove('typing-cursor');
+          if (callback) callback();
+        }
+      }
+      step();
+    }
+
+    function playPhraseSequence() {
+      if (!isExperienceActive) return;
+      if (currentPhraseIndex >= CONFIG.phrases.length) {
+        // Terminaron las frases, pasar a la revelación del ramo
+        transitionToBouquet();
+        return;
+      }
+
+      updatePhraseIndicators();
+      const currentText = CONFIG.phrases[currentPhraseIndex];
+
+      // Entrada suave de la frase
+      phraseTextEl.style.opacity = '1';
+      phraseTextEl.style.transform = 'translateY(0)';
+
+      typeWriter(currentText, phraseTextEl, () => {
+        // Pausa en pantalla para leer la frase tranquilamente
+        sequenceTimeout = setTimeout(() => {
+          if (!isExperienceActive) return;
+          // Salida con fade-out y ligero deslizamiento hacia arriba
+          phraseTextEl.style.opacity = '0';
+          phraseTextEl.style.transform = 'translateY(-12px)';
+
+          sequenceTimeout = setTimeout(() => {
+            currentPhraseIndex++;
+            phraseTextEl.style.transform = 'translateY(12px)';
+            playPhraseSequence();
+          }, CONFIG.fadeTransitionTime);
+
+        }, CONFIG.phraseStayDuration);
+      });
+    }
+
+    /**
+     * ========================================================
+     * TRANSICIONES ENTRE ETAPAS
+     * ========================================================
+     */
+    function startExperience() {
+      if (isExperienceActive || isResetting) return;
+      isExperienceActive = true;
+      currentPhraseIndex = 0;
+
+      playChime(523.25, 'sine', 1.2); // Notita de inicio
+
+      // 1. Ocultar suavemente el botón y encabezado inicial
+      stageIntro.classList.remove('opacity-100', 'scale-100');
+      stageIntro.classList.add('opacity-0', 'scale-95');
+
+      setTimeout(() => {
+        stageIntro.classList.add('hidden');
+        
+        // 2. Mostrar contenedor de frases
+        stagePhrases.classList.remove('hidden');
+        setupPhraseIndicators();
+        
+        // Forzar reflujo para activar transición CSS
+        void stagePhrases.offsetWidth;
+        
+        stagePhrases.classList.remove('opacity-0', 'scale-95');
+        stagePhrases.classList.add('opacity-100', 'scale-100');
+
+        // 3. Comenzar la secuencia de frases
+        playPhraseSequence();
+      }, 700);
+    }
+
+    function transitionToBouquet() {
+      // 1. Desvanecer la sección de frases
+      stagePhrases.classList.remove('opacity-100', 'scale-100');
+      stagePhrases.classList.add('opacity-0', 'scale-95');
+
+      setTimeout(() => {
+        stagePhrases.classList.add('hidden');
+
+        // 2. Encender canvas de pétalos y resplandor ambiental
+        petalsCanvas.classList.remove('opacity-0');
+        petalsCanvas.classList.add('opacity-100');
+        startPetals();
+
+        ambientGlow.classList.remove('opacity-30');
+        ambientGlow.classList.add('opacity-70');
+
+        // 3. Mostrar sección del ramo
+        stageBouquet.classList.remove('hidden');
+        
+        // Reiniciar animaciones de floración del SVG
+        restartSvgAnimations();
+
+        void stageBouquet.offsetWidth;
+
+        stageBouquet.classList.remove('opacity-0', 'translate-y-6');
+        stageBouquet.classList.add('opacity-100', 'translate-y-0');
+
+        // Reproducir arpegio musical de floración
+        playBloomChimes();
+
+        // 4. Con ligero retraso, revelar la tarjeta de dedicatoria
+        setTimeout(() => {
+          dedicationCard.classList.remove('opacity-0', 'translate-y-4');
+          dedicationCard.classList.add('opacity-100', 'translate-y-0');
+        }, 800);
+
+      }, 800);
+    }
+
+    function resetExperience() {
+      if (isResetting) return;
+      isResetting = true;
+      isExperienceActive = false;
+      clearTimeout(typingTimeout);
+      clearTimeout(sequenceTimeout);
+
+      // Desvanecer ramo y dedicatoria
+      stageBouquet.classList.add('opacity-0', 'translate-y-6');
+      stageBouquet.classList.remove('opacity-100', 'translate-y-0');
+      
+      dedicationCard.classList.add('opacity-0', 'translate-y-4');
+      dedicationCard.classList.remove('opacity-100', 'translate-y-0');
+
+      petalsCanvas.classList.remove('opacity-100');
+      petalsCanvas.classList.add('opacity-0');
+      ambientGlow.classList.add('opacity-30');
+      ambientGlow.classList.remove('opacity-70');
+
+      setTimeout(() => {
+        stageBouquet.classList.add('hidden');
+        stagePhrases.classList.add('hidden');
+        
+        // Restaurar pantalla inicial
+        stageIntro.classList.remove('hidden');
+        void stageIntro.offsetWidth;
+        stageIntro.classList.remove('opacity-0', 'scale-95');
+        stageIntro.classList.add('opacity-100', 'scale-100');
+
+        currentPhraseIndex = 0;
+        phraseTextEl.innerHTML = '';
+        stopPetals();
+        isResetting = false;
+      }, 700);
+    }
+
+    function restartSvgAnimations() {
+      // Clona y reemplaza el SVG para resetear con precisión todas las animaciones CSS keyframes
+      const currentSvg = document.getElementById('bouquet-svg');
+      if (!currentSvg || !currentSvg.parentNode) return;
+      const newSvg = currentSvg.cloneNode(true);
+      currentSvg.parentNode.replaceChild(newSvg, currentSvg);
+    }
+
+    /**
+     * ========================================================
+     * SISTEMA DE PÉTALOS Y PARTÍCULAS CAYENDO (Canvas 60fps)
+     * Pétalos violetas orgánicos con balanceo sinusoidal y giro 3D
+     * ========================================================
+     */
+    let ctx = null;
+    let animationFrameId = null;
+    let petals = [];
+    let sparkles = [];
+    const PETAL_COUNT = 34;
+    const SPARKLE_COUNT = 24;
+
+    function initCanvas() {
+      ctx = petalsCanvas.getContext('2d');
+      resizeCanvas();
+      window.addEventListener('resize', resizeCanvas);
+    }
+
+    function resizeCanvas() {
+      petalsCanvas.width = window.innerWidth;
+      petalsCanvas.height = window.innerHeight;
+    }
+
+    class Petal {
+      constructor() {
+        this.reset(true);
+      }
+
+      reset(init = false) {
+        this.x = Math.random() * petalsCanvas.width;
+        this.y = init ? Math.random() * petalsCanvas.height : -30;
+        this.size = Math.random() * 12 + 10; // Tamaño del pétalo
+        this.speedY = Math.random() * 1.2 + 0.8;
+        this.speedX = Math.random() * 0.8 - 0.4;
+        this.angle = Math.random() * 360;
+        this.spinSpeed = (Math.random() - 0.5) * 0.03;
+        this.oscillation = Math.random() * Math.PI * 2;
+        this.oscillationSpeed = Math.random() * 0.02 + 0.015;
+        this.opacity = Math.random() * 0.5 + 0.4;
+        
+        // Variedad en tonalidades de violeta/lila
+        const colors = [
+          '#c084fc', // Lila claro
+          '#a855f7', // Violeta medio
+          '#9333ea', // Violeta intenso
+          '#e9d5ff', // Lavanda suave
+          '#f472b6'  // Rosa sutil
+        ];
+        this.color = colors[Math.floor(Math.random() * colors.length)];
+      }
+
+      update() {
+        this.oscillation += this.oscillationSpeed;
+        this.x += Math.sin(this.oscillation) * 1.2 + this.speedX;
+        this.y += this.speedY;
+        this.angle += this.spinSpeed;
+
+        if (this.y > petalsCanvas.height + 40 || this.x < -50 || this.x > petalsCanvas.width + 50) {
+          this.reset(false);
+        }
+      }
+
+      draw() {
+        ctx.save();
+        ctx.translate(this.x, this.y);
+        ctx.rotate(this.angle);
+        ctx.scale(Math.sin(this.oscillation), 1); // Efecto 3D de volteo en el aire
+        ctx.fillStyle = this.color;
+        ctx.globalAlpha = this.opacity;
+
+        // Dibujar forma de pétalo de violeta suave con curvas Bezier
+        ctx.beginPath();
+        ctx.moveTo(0, 0);
+        ctx.bezierCurveTo(-this.size / 2, -this.size / 2, -this.size / 2, -this.size, 0, -this.size * 1.2);
+        ctx.bezierCurveTo(this.size / 2, -this.size, this.size / 2, -this.size / 2, 0, 0);
+        ctx.fill();
+
+        ctx.restore();
+      }
+    }
+
+    class Sparkle {
+      constructor() {
+        this.reset(true);
+      }
+
+      reset(init = false) {
+        this.x = Math.random() * petalsCanvas.width;
+        this.y = init ? Math.random() * petalsCanvas.height : petalsCanvas.height + 15;
+        this.radius = Math.random() * 2 + 1;
+        this.speedY = -(Math.random() * 0.6 + 0.25); // Sube como polvo de estrellas
+        this.speedX = (Math.random() - 0.5) * 0.35;
+        this.twinklePhase = Math.random() * Math.PI * 2;
+        this.twinkleSpeed = Math.random() * 0.035 + 0.02;
+        this.baseAlpha = Math.random() * 0.6 + 0.3;
+      }
+
+      update() {
+        this.twinklePhase += this.twinkleSpeed;
+        this.y += this.speedY;
+        this.x += this.speedX;
+
+        if (this.y < -20 || this.x < -20 || this.x > petalsCanvas.width + 20) {
+          this.reset(false);
+        }
+      }
+
+      draw() {
+        const curAlpha = Math.max(0, this.baseAlpha * (0.5 + 0.5 * Math.sin(this.twinklePhase)));
+        ctx.save();
+        ctx.fillStyle = `rgba(253, 224, 71, ${curAlpha})`;
+        ctx.shadowBlur = 8;
+        ctx.shadowColor = 'rgba(250, 204, 21, 0.7)';
+        ctx.beginPath();
+        ctx.arc(this.x, this.y, this.radius, 0, Math.PI * 2);
+        ctx.fill();
+        ctx.restore();
+      }
+    }
+
+    function startPetals() {
+      if (!ctx) initCanvas();
+      petals = Array.from({ length: PETAL_COUNT }, () => new Petal());
+      sparkles = Array.from({ length: SPARKLE_COUNT }, () => new Sparkle());
+
+      function loop() {
+        ctx.clearRect(0, 0, petalsCanvas.width, petalsCanvas.height);
+        petals.forEach(p => {
+          p.update();
+          p.draw();
+        });
+        sparkles.forEach(s => {
+          s.update();
+          s.draw();
+        });
+        animationFrameId = requestAnimationFrame(loop);
+      }
+      if (!animationFrameId) {
+        loop();
+      }
+    }
+
+    function stopPetals() {
+      if (animationFrameId) {
+        cancelAnimationFrame(animationFrameId);
+        animationFrameId = null;
+      }
+      if (ctx) {
+        ctx.clearRect(0, 0, petalsCanvas.width, petalsCanvas.height);
+      }
+    }
+
+    // Inicializar listeners al cargar el documento
+    document.addEventListener('DOMContentLoaded', () => {
+      btnStart.addEventListener('click', startExperience);
+      btnReplay.addEventListener('click', resetExperience);
+      initCanvas();
+    });
+  </script>
+</body>
+</html>
