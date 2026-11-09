@@ -14,8 +14,7 @@ const CONFIG = {
   // Secuencia de frases que preparan el momento
   phrases: [
     "Es un poco tarde pero no queria dejar pasar el dia sin regalarte algo ",
-    "mejor tarde que nunca dicen.",
-    "Espero que te guste.",
+    "Mejor tarde que nunca dicen.",
     "Por un día tan largo espero que te saque una sonrisa."
   ],
 
@@ -26,8 +25,8 @@ const CONFIG = {
   dedication: {
     title: "Para ti, con todo mi cariño",
     message:
-      "Aunque no sean reales aquí esta mi detalle para el 9 de Noviembre, te quiero mucho",
-    signature: "Att, ojitos azules "
+      "Aunque no sean reales aquí esta tu ramito de violetas, te quiero mucho",
+    signature: "-Ojitos azules "
   }
 };
 
@@ -114,7 +113,7 @@ export default function App() {
 
   return (
     <div className="relative min-h-[100dvh] w-full flex flex-col justify-center items-center overflow-x-hidden px-4 py-6 sm:py-8 select-none">
-      
+
       {/* Resplandor ambiental de fondo */}
       <motion.div
         animate={{
@@ -127,7 +126,7 @@ export default function App() {
 
       <main className="w-full max-w-xl mx-auto flex flex-col items-center justify-center text-center my-auto">
         <AnimatePresence mode="wait">
-          
+
           {/* ========================================================== */}
           {/* 1. ESTADO START: PANTALLA DE BIENVENIDA                   */}
           {/* ========================================================== */}
@@ -210,13 +209,12 @@ export default function App() {
                     key={idx}
                     layout
                     transition={{ type: 'spring', stiffness: 300, damping: 25 }}
-                    className={`h-1.5 rounded-full transition-colors duration-500 ${
-                      idx === phraseIndex
+                    className={`h-1.5 rounded-full transition-colors duration-500 ${idx === phraseIndex
                         ? 'w-7 sm:w-8 bg-purple-600'
                         : idx < phraseIndex
-                        ? 'w-2 bg-purple-300'
-                        : 'w-2 bg-purple-100'
-                    }`}
+                          ? 'w-2 bg-purple-300'
+                          : 'w-2 bg-purple-100'
+                      }`}
                   />
                 ))}
               </div>

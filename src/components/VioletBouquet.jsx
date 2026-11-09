@@ -3,58 +3,34 @@ import { motion } from 'framer-motion';
 
 /**
  * =========================================================================
- * VARIANTES DE ANIMACIÓN FLUIDA Y CINEMATOGRÁFICA
- * Un desarrollo orgánico en ondas armónicas:
- * 1. Base (tallos y cono de papel)
- * 2. Marco botánico (hojas acorazonadas y paniculata blanca)
- * 3. Floración envolvente de las violetas (de afuera hacia el corazón)
- * 4. Lazo de seda y activación del modo flotante continuo
+ * RAMO DE VIOLETAS BOTÁNICO DE ALTA FLORISTERÍA
+ * Inspirado en bouquets artesanales reales:
+ * - Cúpula densa y tupida de violetas aterciopeladas con pétalos superpuestos
+ * - Nube etérea de paniculata blanca (baby's breath)
+ * - Corona de hojas verdes acorazonadas que abrazan la flor
+ * - Cucurucho envolvente de papel plisado en tonos lila y lazo de raso
  * =========================================================================
  */
 
-// Contenedor SVG principal con orquestación escalonada armónica
-const svgContainerVariants = {
-  hidden: { opacity: 0 },
+// Animación orquestada del conjunto
+const bouquetContainerVariants = {
+  hidden: { opacity: 0, scale: 0.75, y: 40, filter: 'blur(8px)' },
   visible: {
     opacity: 1,
-    transition: {
-      staggerChildren: 0.12,
-      delayChildren: 0.15,
-    },
-  },
-};
-
-// 1. Tallos
-const stemLineVariants = {
-  hidden: { pathLength: 0, opacity: 0 },
-  visible: {
-    pathLength: 1,
-    opacity: 1,
-    transition: {
-      duration: 0.9,
-      ease: [0.16, 1, 0.3, 1],
-    },
-  },
-};
-
-// 2. Cono de papel de floristería: brota hacia arriba suavemente
-const paperWrapVariants = {
-  hidden: { scale: 0.6, opacity: 0, y: 25 },
-  visible: {
     scale: 1,
-    opacity: 1,
     y: 0,
+    filter: 'blur(0px)',
     transition: {
-      type: 'spring',
-      stiffness: 110,
-      damping: 15,
-      mass: 0.8,
+      duration: 1.1,
+      ease: [0.16, 1, 0.3, 1],
+      staggerChildren: 0.05,
+      delayChildren: 0.1,
     },
   },
 };
 
-// 3. Hojas acorazonadas: se abren desde la base
-const leafBranchVariants = {
+// Floración elástica individual sobre el propio centro de cada flor
+const petalBloomVariants = {
   hidden: { scale: 0, opacity: 0 },
   visible: (customRot = 0) => ({
     scale: 1,
@@ -62,71 +38,50 @@ const leafBranchVariants = {
     rotate: customRot,
     transition: {
       type: 'spring',
-      stiffness: 95,
-      damping: 13,
-      mass: 0.8,
-    },
-  }),
-};
-
-// 4. Nube de paniculata blanca: destello sutil
-const babyBreathVariants = {
-  hidden: { scale: 0, opacity: 0 },
-  visible: {
-    scale: 1,
-    opacity: 1,
-    transition: {
-      type: 'spring',
-      stiffness: 150,
-      damping: 14,
-    },
-  },
-};
-
-// 5. Flores de violeta perimetrales: floración elástica en su propio eje
-const outerVioletVariants = {
-  hidden: { scale: 0, opacity: 0 },
-  visible: (customRot = 0) => ({
-    scale: 1,
-    opacity: 1,
-    rotate: customRot,
-    transition: {
-      type: 'spring',
-      stiffness: 115,
-      damping: 11,
+      stiffness: 130,
+      damping: 12,
       mass: 0.7,
     },
   }),
 };
 
-// 6. Violeta central protagonista: floración estelar con resorte suave
-const heroVioletVariants = {
+const leafUnfoldVariants = {
+  hidden: { scale: 0, opacity: 0 },
+  visible: (rot = 0) => ({
+    scale: 1,
+    opacity: 1,
+    rotate: rot,
+    transition: {
+      type: 'spring',
+      stiffness: 100,
+      damping: 14,
+    },
+  }),
+};
+
+const paniculataSparkleVariants = {
   hidden: { scale: 0, opacity: 0 },
   visible: {
     scale: 1,
     opacity: 1,
     transition: {
       type: 'spring',
-      stiffness: 125,
-      damping: 10,
-      mass: 0.75,
-      delay: 0.25,
+      stiffness: 180,
+      damping: 13,
     },
   },
 };
 
-// 7. Lazo de raso satinado
-const silkRibbonVariants = {
-  hidden: { scale: 0, opacity: 0, y: 12 },
+const wrapPaperVariants = {
+  hidden: { scaleY: 0.4, opacity: 0, y: 20 },
   visible: {
-    scale: 1,
+    scaleY: 1,
     opacity: 1,
     y: 0,
     transition: {
       type: 'spring',
-      stiffness: 160,
-      damping: 14,
-      delay: 0.35,
+      stiffness: 120,
+      damping: 15,
     },
   },
 };
@@ -136,367 +91,488 @@ export default function VioletBouquet() {
 
   return (
     <motion.div
-      // Entrada inicial suave con desenfoque y elevación
-      initial={{ opacity: 0, y: 40, scale: 0.8, filter: 'blur(8px)' }}
-      animate={{
-        opacity: 1,
-        y: isBloomed ? [0, -6, 0] : 0,
-        scale: 1,
-        filter: 'blur(0px)',
-        rotate: isBloomed ? [0, 0.9, 0, -0.9, 0] : 0,
-      }}
-      transition={
-        isBloomed
-          ? {
-              y: { duration: 5.5, repeat: Infinity, ease: 'easeInOut' },
-              rotate: { duration: 6, repeat: Infinity, ease: 'easeInOut' },
-            }
-          : {
-              duration: 1.1,
-              ease: [0.16, 1, 0.3, 1],
-            }
-      }
-      onAnimationComplete={() => {
-        if (!isBloomed) setIsBloomed(true);
-      }}
-      className="relative w-72 sm:w-88 md:w-96 mx-auto flex items-center justify-center select-none"
+      variants={bouquetContainerVariants}
+      initial="hidden"
+      animate="visible"
+      onAnimationComplete={() => setIsBloomed(true)}
+      className="relative w-64 xs:w-72 sm:w-80 md:w-88 mx-auto flex items-center justify-center select-none"
     >
-      {/* Resplandor ambiental que respira al florecer */}
+      {/* Resplandor suave trasero que palpita delicadamente */}
       <motion.div
-        animate={{
-          scale: isBloomed ? [1, 1.08, 1] : 1,
-          opacity: isBloomed ? [0.45, 0.7, 0.45] : 0.35,
-        }}
+        animate={
+          isBloomed
+            ? {
+                scale: [1, 1.08, 1],
+                opacity: [0.4, 0.65, 0.4],
+              }
+            : {}
+        }
         transition={{
           duration: 4.5,
           repeat: Infinity,
           ease: 'easeInOut',
         }}
-        className="absolute inset-0 -m-10 bg-gradient-to-t from-purple-300/35 via-violet-200/30 to-amber-100/40 rounded-full blur-3xl -z-10 pointer-events-none"
+        className="absolute inset-0 -m-6 bg-gradient-to-t from-purple-300/35 via-violet-200/30 to-amber-100/30 rounded-full blur-2xl -z-10 pointer-events-none"
       />
 
-      {/* SVG Vectorial con animación de floración orgánica */}
+      {/* SVG del ramo: compacto, tupido y realista */}
       <motion.svg
-        viewBox="0 0 460 520"
-        className="w-full h-auto drop-shadow-2xl overflow-visible"
-        variants={svgContainerVariants}
-        initial="hidden"
-        animate="visible"
+        viewBox="0 0 400 440"
+        className="w-full h-auto drop-shadow-xl overflow-visible"
+        animate={
+          isBloomed
+            ? {
+                y: [0, -5, 0],
+                rotate: [0, 0.8, 0, -0.8, 0],
+              }
+            : {}
+        }
+        transition={{
+          duration: 5,
+          repeat: Infinity,
+          ease: 'easeInOut',
+        }}
       >
         <defs>
           {/* ================= GRADIENTES ================= */}
           {/* Tallos frescos */}
-          <linearGradient id="floristStem" x1="0%" y1="0%" x2="100%" y2="100%">
+          <linearGradient id="vbStem" x1="0%" y1="0%" x2="100%" y2="100%">
             <stop offset="0%" stopColor="#4ade80" />
-            <stop offset="40%" stopColor="#16a34a" />
+            <stop offset="50%" stopColor="#16a34a" />
             <stop offset="100%" stopColor="#14532d" />
           </linearGradient>
 
-          {/* Hojas grandes aterciopeladas de violeta */}
-          <linearGradient id="leafGradDeep" x1="0%" y1="0%" x2="100%" y2="100%">
-            <stop offset="0%" stopColor="#15803d" />
-            <stop offset="60%" stopColor="#166534" />
+          {/* Hojas grandes aterciopeladas */}
+          <linearGradient id="vbLeaf1" x1="0%" y1="0%" x2="100%" y2="100%">
+            <stop offset="0%" stopColor="#22c55e" />
+            <stop offset="50%" stopColor="#15803d" />
             <stop offset="100%" stopColor="#052e16" />
           </linearGradient>
-          <linearGradient id="leafGradLight" x1="0%" y1="0%" x2="100%" y2="100%">
-            <stop offset="0%" stopColor="#22c55e" />
-            <stop offset="60%" stopColor="#15803d" />
-            <stop offset="100%" stopColor="#14532d" />
+          <linearGradient id="vbLeaf2" x1="0%" y1="0%" x2="100%" y2="100%">
+            <stop offset="0%" stopColor="#16a34a" />
+            <stop offset="70%" stopColor="#14532d" />
+            <stop offset="100%" stopColor="#052e16" />
           </linearGradient>
 
-          {/* Pétalos: Violeta profundo real aterciopelado */}
-          <linearGradient id="violetRoyal" x1="0%" y1="0%" x2="0%" y2="100%">
-            <stop offset="0%" stopColor="#7e22ce" />
-            <stop offset="50%" stopColor="#581c87" />
-            <stop offset="100%" stopColor="#3b0764" />
+          {/* Pétalos: Púrpura Real Profundo Aterciopelado */}
+          <linearGradient id="vbPetalDeep" x1="0%" y1="0%" x2="0%" y2="100%">
+            <stop offset="0%" stopColor="#6b21a8" />
+            <stop offset="55%" stopColor="#4c1d95" />
+            <stop offset="100%" stopColor="#2e1065" />
           </linearGradient>
 
-          {/* Pétalos: Violeta medio vibrante */}
-          <linearGradient id="violetVibrant" x1="0%" y1="0%" x2="0%" y2="100%">
-            <stop offset="0%" stopColor="#a855f7" />
+          {/* Pétalos: Violeta Intenso Vibrante */}
+          <linearGradient id="vbPetalVibrant" x1="0%" y1="0%" x2="0%" y2="100%">
+            <stop offset="0%" stopColor="#9333ea" />
             <stop offset="55%" stopColor="#7e22ce" />
-            <stop offset="100%" stopColor="#4c1d95" />
+            <stop offset="100%" stopColor="#581c87" />
           </linearGradient>
 
-          {/* Pétalos: Lila luminoso para luces de volumen */}
-          <linearGradient id="violetLuminous" x1="0%" y1="0%" x2="0%" y2="100%">
+          {/* Pétalos: Lila Luminoso con degradé suave */}
+          <linearGradient id="vbPetalLight" x1="0%" y1="0%" x2="0%" y2="100%">
             <stop offset="0%" stopColor="#d8b4fe" />
             <stop offset="50%" stopColor="#c084fc" />
             <stop offset="100%" stopColor="#9333ea" />
           </linearGradient>
 
-          {/* Centro / Ojo de la violeta: pistilo dorado radiante con centro blanco */}
-          <radialGradient id="goldCenter" cx="50%" cy="50%" r="50%">
+          {/* Centro / Ojo dorado brillante de la violeta */}
+          <radialGradient id="vbGoldEye" cx="50%" cy="50%" r="50%">
             <stop offset="0%" stopColor="#ffffff" />
             <stop offset="35%" stopColor="#fef08a" />
-            <stop offset="70%" stopColor="#eab308" />
+            <stop offset="75%" stopColor="#eab308" />
             <stop offset="100%" stopColor="#a16207" />
           </radialGradient>
 
-          {/* Envoltorio de papel de floristería en tonos lila pastel */}
-          <linearGradient id="wrapPaper1" x1="0%" y1="0%" x2="100%" y2="100%">
+          {/* Envoltorio de papel de floristería (papel seda lila plisado con doblez blanco) */}
+          <linearGradient id="vbWrapOuter" x1="0%" y1="0%" x2="100%" y2="100%">
             <stop offset="0%" stopColor="#f3e8ff" />
             <stop offset="50%" stopColor="#e9d5ff" />
             <stop offset="100%" stopColor="#d8b4fe" />
           </linearGradient>
-          <linearGradient id="wrapPaper2" x1="0%" y1="0%" x2="100%" y2="100%">
+          <linearGradient id="vbWrapInner" x1="0%" y1="0%" x2="100%" y2="100%">
             <stop offset="0%" stopColor="#ffffff" />
-            <stop offset="70%" stopColor="#f5f3ff" />
-            <stop offset="100%" stopColor="#ddd6fe" />
+            <stop offset="60%" stopColor="#faf5ff" />
+            <stop offset="100%" stopColor="#e9d5ff" />
           </linearGradient>
 
-          {/* Lazo de raso satinado fucsia / orquídea */}
-          <linearGradient id="ribbonSilk" x1="0%" y1="0%" x2="100%" y2="100%">
-            <stop offset="0%" stopColor="#e879f9" />
-            <stop offset="45%" stopColor="#c026d3" />
+          {/* Lazo de raso satinado magenta / orquídea */}
+          <linearGradient id="vbRibbon" x1="0%" y1="0%" x2="100%" y2="100%">
+            <stop offset="0%" stopColor="#f472b6" />
+            <stop offset="45%" stopColor="#d946ef" />
             <stop offset="100%" stopColor="#86198f" />
           </linearGradient>
 
-          {/* Sombra de relieve multicapa */}
-          <filter id="floristShadow" x="-15%" y="-15%" width="130%" height="130%">
-            <feDropShadow dx="2" dy="5" stdDeviation="4.5" floodColor="#2e1065" floodOpacity="0.22" />
+          {/* Filtro de sombra botánica suave */}
+          <filter id="vbShadow" x="-20%" y="-20%" width="140%" height="140%">
+            <feDropShadow dx="1.5" dy="3.5" stdDeviation="3.5" floodColor="#1e1b4b" floodOpacity="0.22" />
           </filter>
-          <filter id="softGlow" x="-20%" y="-20%" width="140%" height="140%">
-            <feGaussianBlur stdDeviation="3" result="blur" />
+          <filter id="vbGlow" x="-30%" y="-30%" width="160%" height="160%">
+            <feGaussianBlur stdDeviation="2.5" result="blur" />
             <feComposite in="SourceGraphic" in2="blur" operator="over" />
           </filter>
         </defs>
 
         {/* ========================================================================= */}
-        {/* CAPA 1: TALLOS INFERIORES                                                 */}
+        {/* 1. TALLOS INFERIORES ATADOS                                               */}
         {/* ========================================================================= */}
-        <g stroke="url(#floristStem)" strokeWidth="4.5" strokeLinecap="round" fill="none">
-          <motion.path variants={stemLineVariants} d="M230 350 L210 495" />
-          <motion.path variants={stemLineVariants} d="M220 345 L200 490" />
-          <motion.path variants={stemLineVariants} d="M240 345 L225 500" />
-          <motion.path variants={stemLineVariants} d="M210 355 L190 485" />
-          <motion.path variants={stemLineVariants} d="M250 355 L240 495" />
-          <motion.path variants={stemLineVariants} d="M225 360 L215 505" />
-          <motion.path variants={stemLineVariants} d="M235 360 L228 502" />
+        <g stroke="url(#vbStem)" strokeWidth="4" strokeLinecap="round" fill="none">
+          <path d="M200 310 L190 415" />
+          <path d="M192 312 L178 410" />
+          <path d="M208 312 L202 420" />
+          <path d="M185 315 L170 405" />
+          <path d="M215 315 L212 415" />
+          <path d="M196 320 L184 418" />
+          <path d="M204 320 L195 422" />
         </g>
 
         {/* ========================================================================= */}
-        {/* CAPA 2: PAPEL DE FLORISTERÍA ENVOLVENTE                                    */}
+        {/* 2. PAPEL ENVOLVENTE TRASERO (Cono de floristería que sostiene las flores) */}
         {/* ========================================================================= */}
-        <motion.g
-          variants={paperWrapVariants}
-          style={{ transformBox: 'fill-box', transformOrigin: 'bottom center' }}
-          filter="url(#floristShadow)"
-        >
-          <path d="M230 380 L140 270 C130 220 180 230 200 280 Z" fill="url(#wrapPaper1)" opacity="0.9" />
-          <path d="M230 380 L320 270 C330 220 280 230 260 280 Z" fill="url(#wrapPaper1)" opacity="0.9" />
-          <path d="M230 385 L160 290 Q230 315 300 290 L230 385 Z" fill="url(#wrapPaper2)" stroke="#c084fc" strokeWidth="0.8" opacity="0.95" />
+        <motion.g variants={wrapPaperVariants} filter="url(#vbShadow)">
+          {/* Alas traseras del cucurucho de papel */}
+          <path
+            d="M200 325 L115 190 Q145 170 170 185 L200 325 Z"
+            fill="url(#vbWrapOuter)"
+            opacity="0.9"
+          />
+          <path
+            d="M200 325 L285 190 Q255 170 230 185 L200 325 Z"
+            fill="url(#vbWrapOuter)"
+            opacity="0.9"
+          />
         </motion.g>
 
         {/* ========================================================================= */}
-        {/* CAPA 3: CORONA DE HOJAS VERDES ACORAZONADAS                                */}
+        {/* 3. CORONA DE HOJAS VERDES ACORAZONADAS DE VIOLETA                         */}
         {/* ========================================================================= */}
-        <g filter="url(#floristShadow)">
-          <motion.g custom={-28} variants={leafBranchVariants} style={{ transformBox: 'fill-box', transformOrigin: 'bottom center' }}>
-            <path d="M170 300 C110 285 90 205 145 190 C190 180 195 260 170 300 Z" fill="url(#leafGradDeep)" />
-            <path d="M170 300 Q150 240 145 190" stroke="#052e16" strokeWidth="2" fill="none" opacity="0.4" />
+        <g filter="url(#vbShadow)">
+          {/* Hoja izquierda baja */}
+          <motion.g custom={-30} variants={leafUnfoldVariants} style={{ transformBox: 'fill-box', transformOrigin: 'bottom center' }}>
+            <path d="M140 230 C85 210 70 140 125 125 C165 115 170 185 140 230 Z" fill="url(#vbLeaf1)" />
+            <path d="M140 230 Q125 175 125 125" stroke="#052e16" strokeWidth="2" fill="none" opacity="0.4" />
           </motion.g>
 
-          <motion.g custom={28} variants={leafBranchVariants} style={{ transformBox: 'fill-box', transformOrigin: 'bottom center' }}>
-            <path d="M290 300 C350 285 370 205 315 190 C270 180 265 260 290 300 Z" fill="url(#leafGradDeep)" />
-            <path d="M290 300 Q310 240 315 190" stroke="#052e16" strokeWidth="2" fill="none" opacity="0.4" />
+          {/* Hoja derecha baja */}
+          <motion.g custom={30} variants={leafUnfoldVariants} style={{ transformBox: 'fill-box', transformOrigin: 'bottom center' }}>
+            <path d="M260 230 C315 210 330 140 275 125 C235 115 230 185 260 230 Z" fill="url(#vbLeaf1)" />
+            <path d="M260 230 Q275 175 275 125" stroke="#052e16" strokeWidth="2" fill="none" opacity="0.4" />
           </motion.g>
 
-          <motion.g custom={-12} variants={leafBranchVariants} style={{ transformBox: 'fill-box', transformOrigin: 'bottom center' }}>
-            <path d="M170 180 C125 140 135 60 180 70 C215 75 205 150 170 180 Z" fill="url(#leafGradLight)" />
-            <path d="M170 180 Q175 125 180 70" stroke="#052e16" strokeWidth="1.8" fill="none" opacity="0.3" />
+          {/* Hoja trasera alta izquierda */}
+          <motion.g custom={-15} variants={leafUnfoldVariants} style={{ transformBox: 'fill-box', transformOrigin: 'bottom center' }}>
+            <path d="M160 120 C120 80 130 15 170 25 C200 30 190 95 160 120 Z" fill="url(#vbLeaf2)" />
+            <path d="M160 120 Q165 70 170 25" stroke="#052e16" strokeWidth="1.8" fill="none" opacity="0.3" />
           </motion.g>
 
-          <motion.g custom={14} variants={leafBranchVariants} style={{ transformBox: 'fill-box', transformOrigin: 'bottom center' }}>
-            <path d="M290 180 C335 140 325 60 280 70 C245 75 255 150 290 180 Z" fill="url(#leafGradLight)" />
-            <path d="M290 180 Q285 125 280 70" stroke="#052e16" strokeWidth="1.8" fill="none" opacity="0.3" />
+          {/* Hoja trasera alta derecha */}
+          <motion.g custom={15} variants={leafUnfoldVariants} style={{ transformBox: 'fill-box', transformOrigin: 'bottom center' }}>
+            <path d="M240 120 C280 80 270 15 230 25 C200 30 210 95 240 120 Z" fill="url(#vbLeaf2)" />
+            <path d="M240 120 Q235 70 230 25" stroke="#052e16" strokeWidth="1.8" fill="none" opacity="0.3" />
           </motion.g>
 
-          <motion.g custom={0} variants={leafBranchVariants} style={{ transformBox: 'fill-box', transformOrigin: 'bottom center' }}>
-            <path d="M230 150 C200 110 210 40 230 40 C250 40 260 110 230 150 Z" fill="url(#leafGradDeep)" />
+          {/* Hoja trasera central superior */}
+          <motion.g custom={0} variants={leafUnfoldVariants} style={{ transformBox: 'fill-box', transformOrigin: 'bottom center' }}>
+            <path d="M200 100 C175 60 185 5 200 5 C215 5 225 60 200 100 Z" fill="url(#vbLeaf1)" />
           </motion.g>
         </g>
 
         {/* ========================================================================= */}
-        {/* CAPA 4: PANICULATA BLANCA / GYPSOPHILA                                     */}
+        {/* 4. NUBE DE PANICULATA BLANCA / GYPSOPHILA (Baby's Breath)                  */}
         {/* ========================================================================= */}
         <g stroke="#94a3b8" strokeWidth="0.8" fill="none">
-          <path d="M140 220 Q120 190 110 170 M120 190 Q105 195 95 190" />
-          <path d="M320 220 Q340 190 350 170 M340 190 Q355 195 365 190" />
-          <path d="M180 150 Q165 110 155 90 M165 110 Q145 115 135 105" />
-          <path d="M280 150 Q295 110 305 90 M295 110 Q315 115 325 105" />
+          <path d="M125 140 Q105 110 95 90 M105 110 Q90 115 80 110" />
+          <path d="M275 140 Q295 110 305 90 M295 110 Q310 115 320 110" />
+          <path d="M160 85 Q145 55 135 40 M145 55 Q130 60 120 50" />
+          <path d="M240 85 Q255 55 265 40 M255 55 Q270 60 280 50" />
         </g>
 
         <g>
           {[
-            { cx: 110, cy: 170, r: 4.5 }, { cx: 95, cy: 190, r: 4 }, { cx: 125, cy: 180, r: 3.5 },
-            { cx: 350, cy: 170, r: 4.5 }, { cx: 365, cy: 190, r: 4 }, { cx: 335, cy: 180, r: 3.5 },
-            { cx: 155, cy: 90, r: 4 }, { cx: 135, cy: 105, r: 3.8 }, { cx: 170, cy: 100, r: 3.2 },
-            { cx: 305, cy: 90, r: 4 }, { cx: 325, cy: 105, r: 3.8 }, { cx: 290, cy: 100, r: 3.2 },
-            { cx: 230, cy: 75, r: 4 }, { cx: 215, cy: 85, r: 3.5 }, { cx: 245, cy: 85, r: 3.5 },
-            { cx: 130, cy: 235, r: 4 }, { cx: 330, cy: 235, r: 4 }, { cx: 180, cy: 275, r: 3.5 },
-            { cx: 280, cy: 275, r: 3.5 },
-          ].map((flower, idx) => (
+            { cx: 95, cy: 90, r: 4.5 }, { cx: 80, cy: 110, r: 3.8 }, { cx: 110, cy: 100, r: 3.5 },
+            { cx: 305, cy: 90, r: 4.5 }, { cx: 320, cy: 110, r: 3.8 }, { cx: 290, cy: 100, r: 3.5 },
+            { cx: 135, cy: 40, r: 4 }, { cx: 120, cy: 50, r: 3.6 }, { cx: 150, cy: 52, r: 3.2 },
+            { cx: 265, cy: 40, r: 4 }, { cx: 280, cy: 50, r: 3.6 }, { cx: 250, cy: 52, r: 3.2 },
+            { cx: 200, cy: 30, r: 4 }, { cx: 185, cy: 40, r: 3.5 }, { cx: 215, cy: 40, r: 3.5 },
+            { cx: 115, cy: 175, r: 4 }, { cx: 285, cy: 175, r: 4 },
+          ].map((fl, idx) => (
             <motion.g
               key={idx}
-              variants={babyBreathVariants}
+              variants={paniculataSparkleVariants}
               style={{ transformBox: 'fill-box', transformOrigin: 'center' }}
             >
-              <circle cx={flower.cx} cy={flower.cy} r={flower.r} fill="#ffffff" filter="url(#softGlow)" />
-              <circle cx={flower.cx} cy={flower.cy} r={flower.r * 0.45} fill="#fef08a" />
+              <circle cx={fl.cx} cy={fl.cy} r={fl.r} fill="#ffffff" filter="url(#vbGlow)" />
+              <circle cx={fl.cx} cy={fl.cy} r={fl.r * 0.4} fill="#fef08a" />
             </motion.g>
           ))}
         </g>
 
         {/* ========================================================================= */}
-        {/* CAPA 5: VIOLETAS SILVESTRES (Apertura concéntrica desde su propio centro)  */}
+        {/* 5. CÚPULA DENSA Y TUPIDA DE VIOLETAS (Múltiples capas superpuestas sin huecos) */}
         {/* ========================================================================= */}
-        <g filter="url(#floristShadow)">
-          
-          {/* Nivel Superior */}
-          <motion.g custom={-15} variants={outerVioletVariants} style={{ transformBox: 'fill-box', transformOrigin: 'center' }}>
-            <ellipse cx="170" cy="120" rx="17" ry="22" fill="url(#violetRoyal)" transform="rotate(-20 170 120)" />
-            <ellipse cx="192" cy="120" rx="17" ry="22" fill="url(#violetRoyal)" transform="rotate(20 192 120)" />
-            <ellipse cx="160" cy="138" rx="18" ry="16" fill="url(#violetVibrant)" transform="rotate(-10 160 138)" />
-            <ellipse cx="202" cy="138" rx="18" ry="16" fill="url(#violetVibrant)" transform="rotate(10 202 138)" />
-            <path d="M168 142 C160 165 202 165 194 142 Z" fill="url(#violetLuminous)" />
-            <circle cx="181" cy="135" r="5" fill="url(#goldCenter)" />
+        {/* Colchón oscuro de base que evita que se vea blanco a través de las flores */}
+        <ellipse cx="200" cy="145" rx="90" ry="70" fill="#2e1065" opacity="0.65" />
+
+        <g filter="url(#vbShadow)">
+
+          {/* --- CAPA TRASERA DE VIOLETAS --- */}
+          {/* Flor 1: Superior Izquierda */}
+          <motion.g custom={-12} variants={petalBloomVariants} style={{ transformBox: 'fill-box', transformOrigin: 'center' }}>
+            <g transform="translate(150, 75)">
+              <ellipse cx="-8" cy="-10" rx="14" ry="18" fill="url(#vbPetalDeep)" transform="rotate(-20 -8 -10)" />
+              <ellipse cx="8" cy="-10" rx="14" ry="18" fill="url(#vbPetalDeep)" transform="rotate(20 8 -10)" />
+              <ellipse cx="-13" cy="5" rx="15" ry="13" fill="url(#vbPetalVibrant)" />
+              <ellipse cx="13" cy="5" rx="15" ry="13" fill="url(#vbPetalVibrant)" />
+              <path d="M-8 8 C-7 24 7 24 8 8 Z" fill="url(#vbPetalLight)" />
+              <circle cx="0" cy="3" r="4.2" fill="url(#vbGoldEye)" />
+            </g>
           </motion.g>
 
-          <motion.g custom={2} variants={outerVioletVariants} style={{ transformBox: 'fill-box', transformOrigin: 'center' }}>
-            <ellipse cx="220" cy="105" rx="18" ry="23" fill="url(#violetRoyal)" transform="rotate(-15 220 105)" />
-            <ellipse cx="242" cy="105" rx="18" ry="23" fill="url(#violetRoyal)" transform="rotate(15 242 105)" />
-            <ellipse cx="210" cy="123" rx="18" ry="16" fill="url(#violetLuminous)" transform="rotate(-8 210 123)" />
-            <ellipse cx="252" cy="123" rx="18" ry="16" fill="url(#violetLuminous)" transform="rotate(8 252 123)" />
-            <path d="M218 128 C210 152 252 152 244 128 Z" fill="url(#violetVibrant)" />
-            <circle cx="231" cy="120" r="5" fill="url(#goldCenter)" />
+          {/* Flor 2: Superior Centro */}
+          <motion.g custom={4} variants={petalBloomVariants} style={{ transformBox: 'fill-box', transformOrigin: 'center' }}>
+            <g transform="translate(200, 60)">
+              <ellipse cx="-8" cy="-10" rx="14" ry="18" fill="url(#vbPetalDeep)" transform="rotate(-18 -8 -10)" />
+              <ellipse cx="8" cy="-10" rx="14" ry="18" fill="url(#vbPetalDeep)" transform="rotate(18 8 -10)" />
+              <ellipse cx="-13" cy="5" rx="15" ry="13" fill="url(#vbPetalLight)" />
+              <ellipse cx="13" cy="5" rx="15" ry="13" fill="url(#vbPetalLight)" />
+              <path d="M-8 8 C-7 24 7 24 8 8 Z" fill="url(#vbPetalVibrant)" />
+              <circle cx="0" cy="3" r="4.2" fill="url(#vbGoldEye)" />
+            </g>
           </motion.g>
 
-          <motion.g custom={16} variants={outerVioletVariants} style={{ transformBox: 'fill-box', transformOrigin: 'center' }}>
-            <ellipse cx="270" cy="120" rx="17" ry="22" fill="url(#violetRoyal)" transform="rotate(-18 270 120)" />
-            <ellipse cx="292" cy="120" rx="17" ry="22" fill="url(#violetRoyal)" transform="rotate(18 292 120)" />
-            <ellipse cx="260" cy="138" rx="18" ry="16" fill="url(#violetVibrant)" transform="rotate(-10 260 138)" />
-            <ellipse cx="302" cy="138" rx="18" ry="16" fill="url(#violetVibrant)" transform="rotate(10 302 138)" />
-            <path d="M268 142 C260 165 302 165 294 142 Z" fill="url(#violetLuminous)" />
-            <circle cx="281" cy="135" r="5" fill="url(#goldCenter)" />
+          {/* Flor 3: Superior Derecha */}
+          <motion.g custom={14} variants={petalBloomVariants} style={{ transformBox: 'fill-box', transformOrigin: 'center' }}>
+            <g transform="translate(250, 75)">
+              <ellipse cx="-8" cy="-10" rx="14" ry="18" fill="url(#vbPetalDeep)" transform="rotate(-20 -8 -10)" />
+              <ellipse cx="8" cy="-10" rx="14" ry="18" fill="url(#vbPetalDeep)" transform="rotate(20 8 -10)" />
+              <ellipse cx="-13" cy="5" rx="15" ry="13" fill="url(#vbPetalVibrant)" />
+              <ellipse cx="13" cy="5" rx="15" ry="13" fill="url(#vbPetalVibrant)" />
+              <path d="M-8 8 C-7 24 7 24 8 8 Z" fill="url(#vbPetalLight)" />
+              <circle cx="0" cy="3" r="4.2" fill="url(#vbGoldEye)" />
+            </g>
           </motion.g>
 
-          {/* Nivel Lateral */}
-          <motion.g custom={-28} variants={outerVioletVariants} style={{ transformBox: 'fill-box', transformOrigin: 'center' }}>
-            <ellipse cx="130" cy="180" rx="16" ry="20" fill="url(#violetRoyal)" transform="rotate(-25 130 180)" />
-            <ellipse cx="150" cy="176" rx="16" ry="20" fill="url(#violetRoyal)" transform="rotate(15 150 176)" />
-            <ellipse cx="122" cy="195" rx="16" ry="15" fill="url(#violetVibrant)" />
-            <ellipse cx="158" cy="192" rx="16" ry="15" fill="url(#violetVibrant)" />
-            <path d="M128 198 C122 218 158 218 152 198 Z" fill="url(#violetLuminous)" />
-            <circle cx="140" cy="190" r="4.5" fill="url(#goldCenter)" />
+          {/* --- CAPA MEDIA LATERAL --- */}
+          {/* Flor 4: Lateral Izquierda Borde */}
+          <motion.g custom={-22} variants={petalBloomVariants} style={{ transformBox: 'fill-box', transformOrigin: 'center' }}>
+            <g transform="translate(120, 115)">
+              <ellipse cx="-7" cy="-8" rx="13" ry="16" fill="url(#vbPetalDeep)" transform="rotate(-22 -7 -8)" />
+              <ellipse cx="7" cy="-8" rx="13" ry="16" fill="url(#vbPetalDeep)" transform="rotate(22 7 -8)" />
+              <ellipse cx="-11" cy="4" rx="13" ry="12" fill="url(#vbPetalVibrant)" />
+              <ellipse cx="11" cy="4" rx="13" ry="12" fill="url(#vbPetalVibrant)" />
+              <path d="M-6 6 C-6 20 6 20 6 6 Z" fill="url(#vbPetalLight)" />
+              <circle cx="0" cy="2" r="3.8" fill="url(#vbGoldEye)" />
+            </g>
           </motion.g>
 
-          <motion.g custom={28} variants={outerVioletVariants} style={{ transformBox: 'fill-box', transformOrigin: 'center' }}>
-            <ellipse cx="310" cy="176" rx="16" ry="20" fill="url(#violetRoyal)" transform="rotate(-15 310 176)" />
-            <ellipse cx="330" cy="180" rx="16" ry="20" fill="url(#violetRoyal)" transform="rotate(25 330 180)" />
-            <ellipse cx="302" cy="192" rx="16" ry="15" fill="url(#violetVibrant)" />
-            <ellipse cx="338" cy="195" rx="16" ry="15" fill="url(#violetVibrant)" />
-            <path d="M308 198 C302 218 338 218 332 198 Z" fill="url(#violetLuminous)" />
-            <circle cx="320" cy="190" r="4.5" fill="url(#goldCenter)" />
+          {/* Flor 5: Lateral Derecha Borde */}
+          <motion.g custom={22} variants={petalBloomVariants} style={{ transformBox: 'fill-box', transformOrigin: 'center' }}>
+            <g transform="translate(280, 115)">
+              <ellipse cx="-7" cy="-8" rx="13" ry="16" fill="url(#vbPetalDeep)" transform="rotate(-22 -7 -8)" />
+              <ellipse cx="7" cy="-8" rx="13" ry="16" fill="url(#vbPetalDeep)" transform="rotate(22 7 -8)" />
+              <ellipse cx="-11" cy="4" rx="13" ry="12" fill="url(#vbPetalVibrant)" />
+              <ellipse cx="11" cy="4" rx="13" ry="12" fill="url(#vbPetalVibrant)" />
+              <path d="M-6 6 C-6 20 6 20 6 6 Z" fill="url(#vbPetalLight)" />
+              <circle cx="0" cy="2" r="3.8" fill="url(#vbGoldEye)" />
+            </g>
           </motion.g>
 
-          {/* Nivel Medio Interior */}
-          <motion.g custom={-8} variants={outerVioletVariants} style={{ transformBox: 'fill-box', transformOrigin: 'center' }}>
-            <ellipse cx="180" cy="180" rx="19" ry="24" fill="url(#violetRoyal)" transform="rotate(-16 180 180)" />
-            <ellipse cx="206" cy="180" rx="19" ry="24" fill="url(#violetRoyal)" transform="rotate(16 206 180)" />
-            <ellipse cx="170" cy="202" rx="20" ry="17" fill="url(#violetLuminous)" transform="rotate(-10 170 202)" />
-            <ellipse cx="216" cy="202" rx="20" ry="17" fill="url(#violetLuminous)" transform="rotate(10 216 202)" />
-            <path d="M178 206 C168 232 218 232 208 206 Z" fill="url(#violetVibrant)" />
-            <path d="M193 198 L188 210 M193 198 L193 213 M193 198 L198 210" stroke="#3b0764" strokeWidth="1.3" opacity="0.65" />
-            <circle cx="193" cy="198" r="5.5" fill="url(#goldCenter)" />
+          {/* --- CAPA INTERMEDIA TUPIDA (Relleno denso) --- */}
+          {/* Flor 6: Centro-Izquierda Alta */}
+          <motion.g custom={-8} variants={petalBloomVariants} style={{ transformBox: 'fill-box', transformOrigin: 'center' }}>
+            <g transform="translate(165, 115)">
+              <ellipse cx="-9" cy="-11" rx="16" ry="20" fill="url(#vbPetalDeep)" transform="rotate(-16 -9 -11)" />
+              <ellipse cx="9" cy="-11" rx="16" ry="20" fill="url(#vbPetalDeep)" transform="rotate(16 9 -11)" />
+              <ellipse cx="-14" cy="6" rx="16" ry="14" fill="url(#vbPetalLight)" />
+              <ellipse cx="14" cy="6" rx="16" ry="14" fill="url(#vbPetalLight)" />
+              <path d="M-8 8 C-8 25 8 25 8 8 Z" fill="url(#vbPetalVibrant)" />
+              <path d="M0 4 L-4 13 M0 4 L0 15 M0 4 L4 13" stroke="#2e1065" strokeWidth="1.2" opacity="0.6" />
+              <circle cx="0" cy="4" r="4.8" fill="url(#vbGoldEye)" />
+            </g>
           </motion.g>
 
-          <motion.g custom={8} variants={outerVioletVariants} style={{ transformBox: 'fill-box', transformOrigin: 'center' }}>
-            <ellipse cx="254" cy="180" rx="19" ry="24" fill="url(#violetRoyal)" transform="rotate(-16 254 180)" />
-            <ellipse cx="280" cy="180" rx="19" ry="24" fill="url(#violetRoyal)" transform="rotate(16 280 180)" />
-            <ellipse cx="244" cy="202" rx="20" ry="17" fill="url(#violetVibrant)" transform="rotate(-10 244 202)" />
-            <ellipse cx="290" cy="202" rx="20" ry="17" fill="url(#violetVibrant)" transform="rotate(10 290 202)" />
-            <path d="M252 206 C242 232 292 232 282 206 Z" fill="url(#violetLuminous)" />
-            <path d="M267 198 L262 210 M267 198 L267 213 M267 198 L272 210" stroke="#3b0764" strokeWidth="1.3" opacity="0.65" />
-            <circle cx="267" cy="198" r="5.5" fill="url(#goldCenter)" />
+          {/* Flor 7: Centro-Derecha Alta */}
+          <motion.g custom={8} variants={petalBloomVariants} style={{ transformBox: 'fill-box', transformOrigin: 'center' }}>
+            <g transform="translate(235, 115)">
+              <ellipse cx="-9" cy="-11" rx="16" ry="20" fill="url(#vbPetalDeep)" transform="rotate(-16 -9 -11)" />
+              <ellipse cx="9" cy="-11" rx="16" ry="20" fill="url(#vbPetalDeep)" transform="rotate(16 9 -11)" />
+              <ellipse cx="-14" cy="6" rx="16" ry="14" fill="url(#vbPetalLight)" />
+              <ellipse cx="14" cy="6" rx="16" ry="14" fill="url(#vbPetalLight)" />
+              <path d="M-8 8 C-8 25 8 25 8 8 Z" fill="url(#vbPetalVibrant)" />
+              <path d="M0 4 L-4 13 M0 4 L0 15 M0 4 L4 13" stroke="#2e1065" strokeWidth="1.2" opacity="0.6" />
+              <circle cx="0" cy="4" r="4.8" fill="url(#vbGoldEye)" />
+            </g>
           </motion.g>
 
-          {/* Flores Frontales Bajas */}
-          <motion.g custom={-14} variants={outerVioletVariants} style={{ transformBox: 'fill-box', transformOrigin: 'center' }}>
-            <ellipse cx="165" cy="240" rx="18" ry="22" fill="url(#violetRoyal)" transform="rotate(-15 165 240)" />
-            <ellipse cx="189" cy="240" rx="18" ry="22" fill="url(#violetRoyal)" transform="rotate(15 189 240)" />
-            <ellipse cx="155" cy="258" rx="18" ry="16" fill="url(#violetVibrant)" />
-            <ellipse cx="199" cy="258" rx="18" ry="16" fill="url(#violetVibrant)" />
-            <path d="M165 262 C158 282 196 282 189 262 Z" fill="url(#violetLuminous)" />
-            <circle cx="177" cy="255" r="5" fill="url(#goldCenter)" />
+          {/* Flor 8: Lateral Izquierda Media */}
+          <motion.g custom={-18} variants={petalBloomVariants} style={{ transformBox: 'fill-box', transformOrigin: 'center' }}>
+            <g transform="translate(130, 160)">
+              <ellipse cx="-8" cy="-10" rx="14" ry="18" fill="url(#vbPetalDeep)" transform="rotate(-18 -8 -10)" />
+              <ellipse cx="8" cy="-10" rx="14" ry="18" fill="url(#vbPetalDeep)" transform="rotate(18 8 -10)" />
+              <ellipse cx="-13" cy="5" rx="14" ry="13" fill="url(#vbPetalVibrant)" />
+              <ellipse cx="13" cy="5" rx="14" ry="13" fill="url(#vbPetalVibrant)" />
+              <path d="M-7 7 C-7 22 7 22 7 7 Z" fill="url(#vbPetalLight)" />
+              <circle cx="0" cy="3" r="4.2" fill="url(#vbGoldEye)" />
+            </g>
           </motion.g>
 
-          <motion.g custom={14} variants={outerVioletVariants} style={{ transformBox: 'fill-box', transformOrigin: 'center' }}>
-            <ellipse cx="271" cy="240" rx="18" ry="22" fill="url(#violetRoyal)" transform="rotate(-15 271 240)" />
-            <ellipse cx="295" cy="240" rx="18" ry="22" fill="url(#violetRoyal)" transform="rotate(15 295 240)" />
-            <ellipse cx="261" cy="258" rx="18" ry="16" fill="url(#violetLuminous)" />
-            <ellipse cx="305" cy="258" rx="18" ry="16" fill="url(#violetLuminous)" />
-            <path d="M271 262 C264 282 302 282 295 262 Z" fill="url(#violetVibrant)" />
-            <circle cx="283" cy="255" r="5" fill="url(#goldCenter)" />
+          {/* Flor 9: Lateral Derecha Media */}
+          <motion.g custom={18} variants={petalBloomVariants} style={{ transformBox: 'fill-box', transformOrigin: 'center' }}>
+            <g transform="translate(270, 160)">
+              <ellipse cx="-8" cy="-10" rx="14" ry="18" fill="url(#vbPetalDeep)" transform="rotate(-18 -8 -10)" />
+              <ellipse cx="8" cy="-10" rx="14" ry="18" fill="url(#vbPetalDeep)" transform="rotate(18 8 -10)" />
+              <ellipse cx="-13" cy="5" rx="14" ry="13" fill="url(#vbPetalVibrant)" />
+              <ellipse cx="13" cy="5" rx="14" ry="13" fill="url(#vbPetalVibrant)" />
+              <path d="M-7 7 C-7 22 7 22 7 7 Z" fill="url(#vbPetalLight)" />
+              <circle cx="0" cy="3" r="4.2" fill="url(#vbGoldEye)" />
+            </g>
           </motion.g>
 
-          {/* Capullos laterales */}
-          <motion.g custom={-30} variants={outerVioletVariants} style={{ transformBox: 'fill-box', transformOrigin: 'center' }}>
-            <path d="M125 145 Q115 125 130 120 Q140 130 125 145 Z" fill="url(#violetRoyal)" />
-            <path d="M125 145 Q127 135 125 125" stroke="#16a34a" strokeWidth="2" />
+          {/* --- CAPA FRONTAL PRINCIPAL (Las flores más grandes y llamativas) --- */}
+          {/* Flor 10: Frontal Izquierda */}
+          <motion.g custom={-10} variants={petalBloomVariants} style={{ transformBox: 'fill-box', transformOrigin: 'center' }}>
+            <g transform="translate(160, 185)">
+              <ellipse cx="-10" cy="-12" rx="17" ry="22" fill="url(#vbPetalDeep)" transform="rotate(-16 -10 -12)" />
+              <ellipse cx="10" cy="-12" rx="17" ry="22" fill="url(#vbPetalDeep)" transform="rotate(16 10 -12)" />
+              <ellipse cx="-15" cy="7" rx="17" ry="15" fill="url(#vbPetalLight)" />
+              <ellipse cx="15" cy="7" rx="17" ry="15" fill="url(#vbPetalLight)" />
+              <path d="M-9 9 C-9 28 9 28 9 9 Z" fill="url(#vbPetalVibrant)" />
+              <path d="M0 5 L-5 15 M0 5 L0 18 M0 5 L5 15" stroke="#2e1065" strokeWidth="1.4" opacity="0.7" />
+              <circle cx="0" cy="5" r="5" fill="url(#vbGoldEye)" />
+            </g>
           </motion.g>
-          <motion.g custom={30} variants={outerVioletVariants} style={{ transformBox: 'fill-box', transformOrigin: 'center' }}>
-            <path d="M335 145 Q345 125 330 120 Q320 130 335 145 Z" fill="url(#violetLuminous)" />
-            <path d="M335 145 Q333 135 335 125" stroke="#16a34a" strokeWidth="2" />
+
+          {/* Flor 11: Frontal Derecha */}
+          <motion.g custom={10} variants={petalBloomVariants} style={{ transformBox: 'fill-box', transformOrigin: 'center' }}>
+            <g transform="translate(240, 185)">
+              <ellipse cx="-10" cy="-12" rx="17" ry="22" fill="url(#vbPetalDeep)" transform="rotate(-16 -10 -12)" />
+              <ellipse cx="10" cy="-12" rx="17" ry="22" fill="url(#vbPetalDeep)" transform="rotate(16 10 -12)" />
+              <ellipse cx="-15" cy="7" rx="17" ry="15" fill="url(#vbPetalLight)" />
+              <ellipse cx="15" cy="7" rx="17" ry="15" fill="url(#vbPetalLight)" />
+              <path d="M-9 9 C-9 28 9 28 9 9 Z" fill="url(#vbPetalVibrant)" />
+              <path d="M0 5 L-5 15 M0 5 L0 18 M0 5 L5 15" stroke="#2e1065" strokeWidth="1.4" opacity="0.7" />
+              <circle cx="0" cy="5" r="5" fill="url(#vbGoldEye)" />
+            </g>
           </motion.g>
 
           {/* ========================================================= */}
-          {/* VIOLETA CENTRAL PROTAGONISTA (Florece como el clímax)    */}
+          {/* FLOR 12: CORAZÓN HEROICO CENTRAL DEL RAMO               */}
+          {/* (Flor protagonista, más grande, en primer plano)          */}
           {/* ========================================================= */}
           <motion.g
-            variants={heroVioletVariants}
+            variants={{
+              hidden: { scale: 0, opacity: 0 },
+              visible: {
+                scale: 1,
+                opacity: 1,
+                transition: {
+                  type: 'spring',
+                  stiffness: 140,
+                  damping: 11,
+                  delay: 0.25,
+                },
+              },
+            }}
             style={{ transformBox: 'fill-box', transformOrigin: 'center' }}
           >
-            {/* Pétalos superiores sedosos oscuros */}
-            <ellipse cx="214" cy="225" rx="22" ry="27" fill="url(#violetRoyal)" transform="rotate(-18 214 225)" />
-            <ellipse cx="246" cy="225" rx="22" ry="27" fill="url(#violetRoyal)" transform="rotate(18 246 225)" />
-            {/* Pétalos laterales en lila aterciopelado */}
-            <ellipse cx="202" cy="250" rx="23" ry="19" fill="url(#violetLuminous)" transform="rotate(-10 202 250)" />
-            <ellipse cx="258" cy="250" rx="23" ry="19" fill="url(#violetLuminous)" transform="rotate(10 258 250)" />
-            {/* Pétalo inferior ancho acorazonado */}
-            <path d="M210 255 C196 288 264 288 250 255 Z" fill="url(#violetVibrant)" />
-            {/* Rayitas finas características */}
-            <path d="M230 248 L223 262 M230 248 L230 266 M230 248 L237 262" stroke="#2e1065" strokeWidth="1.6" strokeLinecap="round" />
-            {/* Ojo amarillo radiante */}
-            <circle cx="230" cy="248" r="6" fill="url(#goldCenter)" />
-            <circle cx="229" cy="247" r="2.2" fill="#ffffff" opacity="0.85" />
+            <g transform="translate(200, 160)">
+              {/* Pétalos superiores aterciopelados en violeta real profundo */}
+              <ellipse cx="-12" cy="-14" rx="20" ry="25" fill="url(#vbPetalDeep)" transform="rotate(-18 -12 -14)" />
+              <ellipse cx="12" cy="-14" rx="20" ry="25" fill="url(#vbPetalDeep)" transform="rotate(18 12 -14)" />
+              {/* Pétalos laterales sedosos en lila luminoso */}
+              <ellipse cx="-18" cy="8" rx="21" ry="18" fill="url(#vbPetalLight)" transform="rotate(-8 -18 8)" />
+              <ellipse cx="18" cy="8" rx="21" ry="18" fill="url(#vbPetalLight)" transform="rotate(8 18 8)" />
+              {/* Pétalo inferior ancho con borde ondeado */}
+              <path d="M-12 10 C-11 34 11 34 12 10 Z" fill="url(#vbPetalVibrant)" />
+              {/* Nervaduras oscuras características de la viola silvestre */}
+              <path d="M0 6 L-6 18 M0 6 L0 22 M0 6 L6 18" stroke="#1e1b4b" strokeWidth="1.8" strokeLinecap="round" />
+              {/* Pistilo amarillo dorado con punto de luz */}
+              <circle cx="0" cy="6" r="6" fill="url(#vbGoldEye)" />
+              <circle cx="-1" cy="5" r="2.2" fill="#ffffff" opacity="0.9" />
+            </g>
+          </motion.g>
+
+          {/* Flor 13: Base Centro-Baja (Cierra el ramo sobre el envoltorio) */}
+          <motion.g custom={0} variants={petalBloomVariants} style={{ transformBox: 'fill-box', transformOrigin: 'center' }}>
+            <g transform="translate(200, 215)">
+              <ellipse cx="-9" cy="-10" rx="15" ry="19" fill="url(#vbPetalDeep)" transform="rotate(-15 -9 -10)" />
+              <ellipse cx="9" cy="-10" rx="15" ry="19" fill="url(#vbPetalDeep)" transform="rotate(15 9 -10)" />
+              <ellipse cx="-13" cy="5" rx="15" ry="13" fill="url(#vbPetalLight)" />
+              <ellipse cx="13" cy="5" rx="15" ry="13" fill="url(#vbPetalLight)" />
+              <path d="M-8 7 C-7 22 7 22 8 7 Z" fill="url(#vbPetalVibrant)" />
+              <circle cx="0" cy="3" r="4.2" fill="url(#vbGoldEye)" />
+            </g>
           </motion.g>
 
         </g>
 
         {/* ========================================================================= */}
-        {/* CAPA 6: LAZO DE RASO SATINADO (Aparece y cae con suavidad)                */}
+        {/* 6. PAPEL DE FLORISTERÍA FRONTAL PLISADO (Abraza la base del ramo)         */}
+        {/* ========================================================================= */}
+        <motion.g variants={wrapPaperVariants} filter="url(#vbShadow)">
+          {/* Solapa izquierda del cucurucho */}
+          <path
+            d="M200 325 L145 220 Q200 240 200 325 Z"
+            fill="url(#vbWrapInner)"
+            stroke="#c084fc"
+            strokeWidth="0.8"
+          />
+          {/* Solapa derecha del cucurucho cruzada por encima */}
+          <path
+            d="M200 325 L255 220 Q200 245 200 325 Z"
+            fill="url(#vbWrapOuter)"
+            stroke="#a855f7"
+            strokeWidth="0.8"
+          />
+          {/* Borde superior ondeado decorativo de papel de seda */}
+          <path
+            d="M150 220 Q175 235 200 228 Q225 235 250 220"
+            stroke="#ffffff"
+            strokeWidth="2.5"
+            fill="none"
+            opacity="0.85"
+          />
+        </motion.g>
+
+        {/* ========================================================================= */}
+        {/* 7. LAZO DE RASO SATINADO (Ata el ramo con caída natural)                  */}
         {/* ========================================================================= */}
         <motion.g
-          variants={silkRibbonVariants}
+          variants={{
+            hidden: { scale: 0, opacity: 0 },
+            visible: {
+              scale: 1,
+              opacity: 1,
+              transition: {
+                type: 'spring',
+                stiffness: 180,
+                damping: 14,
+                delay: 0.35,
+              },
+            },
+          }}
           style={{ transformBox: 'fill-box', transformOrigin: 'center' }}
-          filter="url(#floristShadow)"
+          filter="url(#vbShadow)"
         >
-          <rect x="205" y="375" width="50" height="15" rx="7" fill="#701a75" opacity="0.3" transform="rotate(-2 230 382)" />
-          <rect x="207" y="372" width="46" height="13" rx="6" fill="url(#ribbonSilk)" transform="rotate(-1 230 378)" />
+          {/* Vuelta de cinta atando los tallos */}
+          <rect x="180" y="318" width="40" height="13" rx="6" fill="#86198f" opacity="0.3" />
+          <rect x="182" y="316" width="36" height="11" rx="5" fill="url(#vbRibbon)" />
 
-          <path d="M228 380 C185 350 160 385 190 405 C215 415 225 390 228 382 Z" fill="url(#ribbonSilk)" />
-          <path d="M226 382 C200 370 180 388 198 400" stroke="#fae8ff" strokeWidth="1.6" fill="none" opacity="0.5" />
+          {/* Lazada izquierda */}
+          <path d="M198 322 C165 295 145 328 170 342 C190 350 196 332 198 324 Z" fill="url(#vbRibbon)" />
+          <path d="M196 324 C175 312 160 326 176 336" stroke="#fdf4ff" strokeWidth="1.5" fill="none" opacity="0.6" />
 
-          <path d="M232 380 C275 350 300 385 270 405 C245 415 235 390 232 382 Z" fill="url(#ribbonSilk)" />
-          <path d="M234 382 C260 370 280 388 262 400" stroke="#fae8ff" strokeWidth="1.6" fill="none" opacity="0.5" />
+          {/* Lazada derecha */}
+          <path d="M202 322 C235 295 255 328 230 342 C210 350 204 332 202 324 Z" fill="url(#vbRibbon)" />
+          <path d="M204 324 C225 312 240 326 224 336" stroke="#fdf4ff" strokeWidth="1.5" fill="none" opacity="0.6" />
 
-          <path d="M226 385 Q205 440 190 475 Q205 455 218 468 Q222 425 228 390 Z" fill="url(#ribbonSilk)" />
-          <path d="M234 385 Q255 440 270 475 Q255 455 242 468 Q238 425 232 390 Z" fill="url(#ribbonSilk)" />
+          {/* Cintas colgantes ondeadas */}
+          <path d="M196 326 Q178 375 168 405 Q180 390 190 400 Q192 360 198 330 Z" fill="url(#vbRibbon)" />
+          <path d="M204 326 Q222 375 232 405 Q220 390 210 400 Q208 360 202 330 Z" fill="url(#vbRibbon)" />
 
-          <ellipse cx="230" cy="382" rx="10" ry="9" fill="#a21caf" />
-          <ellipse cx="230" cy="381" rx="8" ry="7" fill="url(#ribbonSilk)" />
-          <circle cx="228" cy="378" r="2.8" fill="#ffffff" opacity="0.8" />
+          {/* Nudo central abombado con destello */}
+          <ellipse cx="200" cy="323" rx="9" ry="8" fill="#c026d3" />
+          <ellipse cx="200" cy="322" rx="7" ry="6" fill="url(#vbRibbon)" />
+          <circle cx="198" cy="320" r="2.2" fill="#ffffff" opacity="0.85" />
         </motion.g>
       </motion.svg>
     </motion.div>
