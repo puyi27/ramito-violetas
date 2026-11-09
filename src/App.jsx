@@ -14,8 +14,7 @@ const CONFIG = {
   // Secuencia de frases que preparan el momento
   phrases: [
     "Es un poco tarde pero no queria dejar pasar el dia sin regalarte algo ",
-    "mejor tarde que nunca dicen.",
-    "Espero que te guste.",
+    "Mejor tarde que nunca dicen.",
     "Por un día tan largo espero que te saque una sonrisa."
   ],
 
@@ -82,17 +81,16 @@ export default function App() {
 
   return (
     <div className="relative min-h-[100dvh] w-full flex flex-col justify-center items-center overflow-x-hidden px-4 py-6 sm:py-8 select-none">
-      
+
       {/* Resplandor ambiental estático y ligero (sin repintados continuos de blur) */}
       <div
-        className={`pointer-events-none fixed top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[280px] sm:w-[480px] h-[280px] sm:h-[480px] bg-gradient-to-tr from-purple-200/35 via-violet-300/25 to-pink-200/25 rounded-full blur-3xl -z-10 transition-opacity duration-1000 ${
-          appState === 'SURPRISE' ? 'opacity-80' : 'opacity-40'
-        }`}
+        className={`pointer-events-none fixed top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[280px] sm:w-[480px] h-[280px] sm:h-[480px] bg-gradient-to-tr from-purple-200/35 via-violet-300/25 to-pink-200/25 rounded-full blur-3xl -z-10 transition-opacity duration-1000 ${appState === 'SURPRISE' ? 'opacity-80' : 'opacity-40'
+          }`}
       />
 
       <main className="w-full max-w-xl mx-auto flex flex-col items-center justify-center text-center my-auto">
         <AnimatePresence mode="wait">
-          
+
           {/* ========================================================== */}
           {/* 1. ESTADO START: PANTALLA DE BIENVENIDA                   */}
           {/* ========================================================== */}
@@ -155,13 +153,12 @@ export default function App() {
                 {CONFIG.phrases.map((_, idx) => (
                   <div
                     key={idx}
-                    className={`h-1.5 rounded-full transition-all duration-300 ${
-                      idx === phraseIndex
+                    className={`h-1.5 rounded-full transition-all duration-300 ${idx === phraseIndex
                         ? 'w-7 sm:w-8 bg-purple-600'
                         : idx < phraseIndex
-                        ? 'w-2 bg-purple-300'
-                        : 'w-2 bg-purple-100'
-                    }`}
+                          ? 'w-2 bg-purple-300'
+                          : 'w-2 bg-purple-100'
+                      }`}
                   />
                 ))}
               </div>
